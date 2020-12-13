@@ -80,7 +80,7 @@ var decisions = {
 function setCountry(id) {
     countryId = id;
     document.getElementById("countryName").innerHTML = countries[id].name;
-    document.getElementById("leaderPortrait").src = `leaders/${countries[id].leader}.png`;
+    document.getElementById("leaderPortraitImg").src = `leaders/${countries[id].leader}.png`;
     document.getElementById("leaderName").innerHTML = `${leaders[countries[id].leader].name}`;
     document.getElementById("leaderParty").innerHTML = `${leaders[countries[id].leader].party}`;
     document.getElementById("leaderPosition").innerHTML = `${leaders[countries[id].leader].position}`;
@@ -116,15 +116,20 @@ function setEvent(id) {
 
 function addDecision(id) {
     var decision = document.createElement("tr");
+    decision.style.border = "solid";
     decision.id = id + "-decision";
     var child = document.createElement("td");
+    child.style.border = "solid";
     child.innerHTML = "<b>" + decisions[id].title + "</b>";
     decision.appendChild(child);
     var child = document.createElement("td");
+    child.style.border = "solid";
     child.innerHTML = decisions[id].desc;
     decision.appendChild(child);
     var child = document.createElement("td");
+    child.style.border = "solid";
     var child2 = document.createElement("button");
+    child2.style.border = "solid";
     child2.innerHTML = "&#10003;";
     child2.id = id;
     child2.onclick = function() { effect(id, decisions[id].label, decisions[id].log, true) }
@@ -210,7 +215,7 @@ function update() {
             timeDays = (days % 30) + 1;
             timeMonths = (Math.floor(days / 30) % 12);
             timeYears = (Math.floor(days / 360)) + 2000;
-            document.getElementById("mainTitle").innerHTML = `Country - ${("0"+timeDays).slice(-2)} ${months[timeMonths]} ${timeYears}`;
+            document.getElementById("mainTitleText").innerHTML = `Country - ${("0"+timeDays).slice(-2)} ${months[timeMonths]} ${timeYears}`;
         }
         frame++;
 
@@ -226,12 +231,6 @@ function update() {
         document.getElementById("pauseButton").innerHTML = "Unpause";
     } else {
         document.getElementById("pauseButton").innerHTML = "Pause";
-    }
-
-    if (eventId == "") {
-        document.getElementById("eventTable").style.visibility = "hidden";
-    } else {
-        document.getElementById("eventTable").style.visibility = "visible";
     }
 
     if (eventId == "") {

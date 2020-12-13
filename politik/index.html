@@ -7,59 +7,33 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div class="leader">
-            <table>
-                <tr>
-                    <td colspan="2"><div id="mainTitle">Country - 01 Jan 2000</div>
+        <div id="grid-container">
+            <div id="politics">
+                <div id="mainTitle">
+                    <p id="mainTitleText">Country - 01 Jan 2000</p>
                     <button id="pauseButton" onclick="paused = !paused">Pause</button></td>
-                </tr>
-                <tr>
-                    <th>Country</th>
-                    <td><h2 id="countryName"></h2></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Leader</td>
-                </tr>
-                <tr>
-                    <th>Portrait</th>
-                    <td><img id="leaderPortrait" src=""     width=300></td>
-                </tr>
-                <tr>
-                    <th>Name</th>
-                    <td id="leaderName"></td>
-                </tr>
-                <tr>
-                    <th>Party</th>
-                    <td id="leaderParty"></td>
-                </tr>
-                <tr>
-                    <th>Position</th>
-                    <td id="leaderPosition"></td>
-                </tr>
-                <tr>
-                    <th>Summary</th>
-                    <td id="leaderSummary"></td>
-                </tr>
-            </table>
-        </div>
-        <div id="event">
-            <table id="eventTable">
-                <tr>
-                    <td width="30%"> <h1 id="eventTitle"></h1>  </td>
-                    <td width="50%"> <p id="eventDesc"></p> </td>
-                    <td width="20%"> <div id="eventButtons"> </td>
-                    </div> </td>
-                <tr>
-            </table>
-            <div id="eventLog" style="height:100px;     border:1px solid white; overflow:auto;">
+                </div>
+                <div id="countryName"></div>
+                <div id="leaderPortrait">
+                    <img id="leaderPortraitImg" src=""></img>
+                </div>
+                <div id="leaderName"></div>
+                <div id="leaderParty"></div>
+                <div id="leaderPosition"></div>
+                <div id="leaderSummary"></div>
             </div>
-            <br>
-            <svg 
-               xmlns:svg="http://www.w3.org/2000/svg"
-               xmlns="http://www.w3.org/2000/svg"
-               version="1.0"
-               viewBox="0 0 400.87827 419.87268"
-               id="svg4184">
+            <div id="content">
+                <div id="eventTable">
+                    <div id="eventTitle"></div>
+                    <div id="eventDesc"></div>
+                    <div id="eventButtons"></div>
+                    <div id="eventTitle"></div>
+                    <div id="decisions"></div>
+                </div>
+            </div>
+            <div id="map">
+                <svg 
+                                xmlns:svg="http://www.w3.org/2000/svg"                xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 400.87827 419.87268" id="svg4184">
                     <defs
                     id="defs4186" />
                     <g
@@ -240,12 +214,10 @@
                     <path
                        d="M 733.62144,-420.2795 C 732.20855,-420.55382 731.62326,-421.21776 731.97843,-422.14332 C 732.28187,-422.93405 732.00542,-423.58101 731.36412,-423.58101 C 730.72282,-423.58101 730.50603,-424.07922 730.88236,-424.68814 C 731.34281,-425.43317 730.87152,-425.57466 729.44138,-425.12076 C 728.2725,-424.74977 727.31615,-424.87778 727.31615,-425.40521 C 727.31615,-425.93265 728.55365,-426.70258 730.06615,-427.11617 L 732.81615,-427.86815 L 730.31615,-428.6249 C 728.8692,-429.06289 728.51369,-429.42364 729.47215,-429.48133 C 730.51217,-429.54393 731.72106,-431.32112 732.72215,-434.25915 C 734.60715,-439.79132 734.73818,-442.27367 733.17275,-442.79548 C 732.3316,-443.07586 732.3589,-443.79237 733.276,-445.50598 C 734.06124,-446.97323 734.16091,-448.06587 733.54529,-448.45818 C 732.96189,-448.82996 732.90728,-449.98793 733.40982,-451.33101 C 734.29869,-453.7066 735.7837,-454.25155 736.81615,-452.58101 C 737.81513,-450.96463 741.23901,-451.43123 743.44244,-453.48404 C 745.25655,-455.17414 745.30671,-455.48691 743.89071,-456.27935 C 741.5921,-457.56571 743.8918,-460.20258 748.06615,-461.06695 C 752.14602,-461.91176 752.35929,-460.27925 748.67187,-456.43041 C 746.12346,-453.77045 746.08804,-453.5781 747.69492,-451.12569 C 749.58047,-448.24797 751.10742,-447.87348 751.95452,-450.08101 C 752.84861,-452.41096 753.80128,-451.88391 755.63094,-448.04708 C 757.75864,-443.58524 757.843,-433.49352 755.78877,-429.16456 C 754.36654,-426.16742 753.9517,-425.96411 749.76223,-426.2109 C 747.21816,-426.36077 745.50964,-426.07696 745.8305,-425.55779 C 746.1426,-425.05281 745.18941,-424.33632 743.71231,-423.96559 C 742.23522,-423.59486 740.19181,-422.45667 739.17142,-421.43628 C 738.15102,-420.41588 736.97865,-419.64229 736.56615,-419.71719 C 736.15365,-419.79209 734.82853,-420.04513 733.62144,-420.2795 z "
                        style="fill:#c5c5c5;fill-opacity:1" id="path2122" />
-                </g>
-                <rect style="stroke:white; fill:none; stroke-width:1px" width="100%" height="100%" />
-            </svg>
-            <div>
-                <table id="decisions">
-                </table>
+                    </g>
+                    <rect style="stroke:white; fill:none; stroke-width:1px" width="100%" height="100%" />
+                    </svg>
+                <div id="eventLog"></div>
             </div>
         </div>
     </body>
