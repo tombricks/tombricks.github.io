@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: black;
+    color: white;
+}
+
+table,
+th,
+td {
+    border: 1px solid white;
+    text-align: center;
+}
+
+.leader {
+    float: left;
+    width: 29%;
+    object-fit: contain;
+}
+
+#event {
+    float: right;
+    width: 70%;
+}
+
+svg {
+    width: 40%;
+    float: right;
+}
