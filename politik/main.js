@@ -36,6 +36,12 @@ var leaders = {
         "party": "All-Union Communist Party (Bolsheviks)",
         "position": "General Secretary",
         "summary": "A staunch conservative and anti-reformist, General Secretary Gennady Yanayev marks a return to totalitarianism and hard-left Bolshevism for the Soviet Union. Heading a group of anti-Gorbachev Communists and with significant support from the Soviet Armed Forces, he successfully lead a coup to bring an end to the Confederation and restoration of the Soviet Union. It began when Warships and a Tank division surrounds Gorbachev in his summer villa, placing him under house arrest. Simultaneously, President of the Russian Soviet Federation Boris Yeltsin is arrested by KGB officials and Army soldiers loyal to Yanayev. The Supreme Soviet then voted, with pressure from the Army, to adopt a new constitution, once again making the General Secretary the leading force in the country. Not long afterwards, the Supreme Soviet elected Yanayev to power and he began to quickly reverse the reforms of the last fifteen years."
+    },
+    "Putin": {
+        "name": "Vladimir Putin",
+        "party": "United Soviet Party",
+        "position": "President",
+        "summary": "The union under President Putin, despite claiming to hold on to the values of socialism, is a clearly capitalist oligarchal state."
     }
 }
 
@@ -245,3 +251,11 @@ function update() {
         document.getElementById("decisions").style.visibility = "visible";
     }
 }
+
+// As with JSON, use the Fetch API & ES6
+fetch('test.txt')
+    .then(response => response.text())
+    .then(data => {
+        // Do something with your data
+        console.log(data);
+    });
