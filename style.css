@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 body {
-    font-family: 'Roboto Mono', monospace;
-    background-color: black;
+    font-family: 'sans-serif', Trebuchet MS;
+    text-shadow: black 2px 2px 2px;
+    background-color: rgb(33, 33, 33);
     color: white;
+    text-align: center;
 }
