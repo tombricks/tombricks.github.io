@@ -408,6 +408,13 @@ var conflictdata = {
             "side2": "CSA"
         },
         {
+            "id": 75,
+            "column": "Americas",
+            "name": "Petorian Conflict",
+            "side1": "USA",
+            "side2": "PET"
+        },
+        {
             "id": 58,
             "column": "Middle East",
             "name": "Afghanistan Conflict",

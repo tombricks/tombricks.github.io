@@ -109,7 +109,8 @@ var countrydata = {
         "BOU": "flags/bougainville.png",
         "HVR": "flags/havering.png",
         "GER": "flags/germany.png",
-        "REI": "flags/reichsburger.png"
+        "REI": "flags/reichsburger.png",
+        "PET": "flags/petoria.png"
     },
     "names": {
         "ISR": "Israel",
@@ -221,6 +222,7 @@ var countrydata = {
         "BOU": "Bougainville",
         "HVR": "Havering",
         "GER": "Germany",
-        "REI": "Reichsbürger Movement"
+        "REI": "Reichsbürger Movement",
+        "PET": "Petoria"
     }
 }
