@@ -1,5 +1,5 @@
 var conflictdata = {
-    "columns": [ "Europe", "Post-Soviet", "Africa and Asia", "Middle East", "Other" ],
+    "columns": [ "Americas", "Europe", "Post-Soviet", "Africa", "Asia", "Middle East", "Other" ],
     "conflicts": [
         {
             "column": "Middle East",
@@ -92,7 +92,7 @@ var conflictdata = {
             "side2": "BSQ"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Africa",
             "name": "Spanish-Morocco Question",
             "side1": "SPR",
             "side2": "MOR"
@@ -146,13 +146,13 @@ var conflictdata = {
             "side2": "ULS"
         },
         {
-            "column": "Other",
+            "column": "Americas",
             "name": "Falklands Conflict",
             "side1": "ENG",
             "side2": "ARG"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Africa",
             "name": "Western Sahrawi Conflict",
             "side1": "MOR",
             "side2": "SDR"
@@ -170,7 +170,7 @@ var conflictdata = {
             "side2": "PLC"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "Kashmir Conflict",
             "side1": "IND",
             "side2": "PAK"
@@ -182,49 +182,49 @@ var conflictdata = {
             "side2": "TRA"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "Korean Conflict",
             "side1": "ROK",
             "side2": "PRK"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "Tibetan Conflict",
             "side1": "CHI",
             "side2": "TIB"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "Xinjiang Conflict",
             "side1": "CHI",
             "side2": "XIN"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "Hong Kong Conflict",
             "side1": "CHI",
             "side2": "HKG"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "Taiwanese Conflict",
             "side1": "CHI",
             "side2": "ROC"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "Senkaku Islands Dispute",
             "side1": "CHI",
             "side2": "JAP"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "South China Sea Disputes",
             "side1": "CHI",
             "side2": "SCSD"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Asia",
             "name": "Kuril Islands Dispute",
             "side1": "RUS",
             "side2": "JAP"
@@ -242,19 +242,19 @@ var conflictdata = {
             "side2": "ABK"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Africa",
             "name": "Somaliland Conflict",
             "side1": "SOM",
             "side2": "SML"
         },
         {
-            "column": "Other",
+            "column": "Americas",
             "name": "Quebec Independence",
             "side1": "CAN",
             "side2": "QUE"
         },
         {
-            "column": "Other",
+            "column": "Americas",
             "name": "Cuban Embargo",
             "side1": "USA",
             "side2": "CUB"
@@ -290,7 +290,7 @@ var conflictdata = {
             "side2": "RUO"
         },
         {
-            "column": "Africa and Asia",
+            "column": "Africa",
             "name": "Tigray War",
             "side1": "ETH",
             "side2": "TIG"

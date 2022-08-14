@@ -16,12 +16,34 @@ body {
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     vertical-align: auto;
 }
+@media only screen and (min-width: 500px) {
+    .column {
+        float: left;
+        width: 50%;
+    }
 
-.column {
-    float: left;
-    width: 16.667%;
 }
+@media only screen and (min-width: 1000px) {
+    .column {
+        float: left;
+        width: 25%;
+    }
 
+}
+@media only screen and (min-width: 1400px) {
+    .column {
+        float: left;
+        width: 20%;
+    }
+
+}
+@media only screen and (min-width: 1750px) {
+    .column {
+        float: left;
+        width: 12.5%;
+    }
+
+}
 .row:after {
     content: "";
     display: table;

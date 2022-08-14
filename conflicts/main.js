@@ -3,7 +3,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 conflictdata["columns"].forEach((column, columnI, columnA) => {
-    document.write(`<div class="column"><h1>${column}</h1><hr>`)
+    document.write(`<div class="column"><hr><h1>${column}</h1><hr>`)
     console.log(column)
     conflictdata["conflicts"].forEach((currentValue, index, arr) => {
         if (currentValue["column"] == column) {
