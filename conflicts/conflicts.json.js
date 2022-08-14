@@ -9,6 +9,12 @@ var conflictdata = {
         },
         {
             "column": "Middle East",
+            "name": "Fatah-Hamas Conflict",
+            "side1": "FTH",
+            "side2": "HMS"
+        },
+        {
+            "column": "Middle East",
             "name": "Golan Heights",
             "side1": "ISR",
             "side2": "SYR"
@@ -63,6 +69,12 @@ var conflictdata = {
         },
         {
             "column": "Post-Soviet",
+            "name": "Chechen Conflict",
+            "side1": "RUS",
+            "side2": "CHE"
+        },
+        {
+            "column": "Post-Soviet",
             "name": "Russo-Ukrainian War",
             "side1": "RUS",
             "side2": "UKR"
@@ -108,6 +120,12 @@ var conflictdata = {
             "name": "Corsican Independence",
             "side1": "FRA",
             "side2": "COR"
+        },
+        {
+            "column": "Europe",
+            "name": "Occitan Independence",
+            "side1": "FRA",
+            "side2": "OCC"
         },
         {
             "column": "Europe",
@@ -182,6 +200,24 @@ var conflictdata = {
             "side2": "PAK"
         },
         {
+            "column": "Asia",
+            "name": "Naxalite Insurgency",
+            "side1": "IND",
+            "side2": "NAX"
+        },
+        {
+            "column": "Americas",
+            "name": "Shining Path Insurgency",
+            "side1": "PRU",
+            "side2": "SHP"
+        },
+        {
+            "column": "Americas",
+            "name": "Venezuelean Presidential Crisis",
+            "side1": "VEG",
+            "side2": "VEM"
+        },
+        {
             "column": "Post-Soviet",
             "name": "Transnistria Conflict",
             "side1": "MOL",
@@ -195,13 +231,25 @@ var conflictdata = {
         },
         {
             "column": "Asia",
-            "name": "Tibetan Conflict",
+            "name": "Tibetan Independence",
             "side1": "CHI",
             "side2": "TIB"
         },
         {
             "column": "Asia",
-            "name": "Xinjiang Conflict",
+            "name": "Inner Mongolian Independence",
+            "side1": "CHI",
+            "side2": "INM"
+        },
+        {
+            "column": "Asia",
+            "name": "Manchu Independence",
+            "side1": "CHI",
+            "side2": "MAN"
+        },
+        {
+            "column": "Asia",
+            "name": "Xinjiang Independence",
             "side1": "CHI",
             "side2": "XIN"
         },
@@ -216,6 +264,12 @@ var conflictdata = {
             "name": "Taiwanese Conflict",
             "side1": "CHI",
             "side2": "ROC"
+        },
+        {
+            "column": "Asia",
+            "name": "Taiwan Independence",
+            "side1": "ROC",
+            "side2": "TAI"
         },
         {
             "column": "Asia",
@@ -234,6 +288,12 @@ var conflictdata = {
             "name": "Kuril Islands Dispute",
             "side1": "RUS",
             "side2": "JAP"
+        },
+        {
+            "column": "Asia",
+            "name": "Wa Conflict",
+            "side1": "MYA",
+            "side2": "WAA"
         },
         {
             "column": "Post-Soviet",
@@ -264,6 +324,18 @@ var conflictdata = {
             "name": "Cuban Embargo",
             "side1": "USA",
             "side2": "CUB"
+        },
+        {
+            "column": "Americas",
+            "name": "Texan Independence",
+            "side1": "USA",
+            "side2": "TEX"
+        },
+        {
+            "column": "Americas",
+            "name": "Southern Independence",
+            "side1": "USA",
+            "side2": "CSA"
         },
         {
             "column": "Middle East",
@@ -306,6 +378,66 @@ var conflictdata = {
             "name": "Bosnian Conflict",
             "side1": "BOS",
             "side2": "SRP"
+        },
+        {
+            "column": "Africa",
+            "name": "Nile Conflict",
+            "side1": "ETH",
+            "side2": "EGY"
+        },
+        {
+            "column": "Africa",
+            "name": "Inner-Sudan Conflict",
+            "side1": "SUD",
+            "side2": "SSD"
+        },
+        {
+            "column": "Africa",
+            "name": "Tuareg Independence",
+            "side1": "TUA",
+            "side2": "MLI"
+        },
+        {
+            "column": "Africa",
+            "name": "Algeria-Morocco Rivalry",
+            "side1": "ALG",
+            "side2": "MOR"
+        },
+        {
+            "column": "Africa",
+            "name": "Biafran Independence",
+            "side1": "NGA",
+            "side2": "BIA"
+        },
+        {
+            "column": "Africa",
+            "name": "Ambazonia War",
+            "side1": "CMR",
+            "side2": "AMB"
+        },
+        {
+            "column": "Africa",
+            "name": "Rhodesian-Zimbabwe Conflict",
+            "side1": "ZIM",
+            "side2": "RHO"
+        },
+        {
+            "column": "Africa",
+            "name": "Ethiopian-Somali Conflict",
+            "side1": "ETH",
+            "side2": "SOM"
+        },
+        {
+            "column": "Africa",
+            "name": "Eritrean-Ethiopian War",
+            "side1": "ERI",
+            "side2": "ETH"
+        },
+        {
+            "column": "Other",
+            "name": "Bougainville Independence",
+            "side1": "PNG",
+            "side2": "BOU"
         }
     ]
 }
