@@ -59,3 +59,14 @@ window.onbeforeunload = function ()
 {
     return confirm("Are you sure you want to reload?");
 };
+
+function takeScreen() {
+    share()
+    html2canvas(document.body, {
+        scrollX: 0,
+        scrollY: 0
+    }).then(function(canvas) {
+        canvas.id = "output";
+        document.getElementById("output").parentElement.replaceChild(canvas, document.getElementById("output"));
+    });
+}
