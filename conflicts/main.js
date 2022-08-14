@@ -8,9 +8,9 @@ conflictdata["columns"].forEach((column, columnI, columnA) => {
     conflictdata["conflicts"].forEach((currentValue, index, arr) => {
         if (currentValue["column"] == column) {
             document.write(`<h3>${currentValue["name"]}</h3>
-        <input id="conflict_${index}_side1" type="radio" name="conflict_${index}" value="${currentValue["side1"]}"><img alt="${countrydata["names"][currentValue["side1"]]}" id="conflict_${index}_side1btn" onclick="buttonClick(1, ${index})" class="flag" src="${countrydata["flags"][currentValue["side1"]]}" />
+        <input id="conflict_${index}_side1" type="radio" name="conflict_${index}" value="${currentValue["side1"]}"><img title="${countrydata["names"][currentValue["side1"]]}" id="conflict_${index}_side1btn" onclick="buttonClick(1, ${index})" class="flag" src="${countrydata["flags"][currentValue["side1"]]}" />
         <input id="conflict_${index}_na" type="radio" name="conflict_${index}" value="neither">
-        <img onclick="buttonClick(2, ${index})" id="conflict_${index}_side2btn" class="flag" alt="${countrydata["names"][currentValue["side2"]]}" src="${countrydata["flags"][currentValue["side2"]]}" /><input id="conflict_${index}_side2" type="radio" name="conflict_${index}" value="${currentValue["side2"]}">
+        <img onclick="buttonClick(2, ${index})" id="conflict_${index}_side2btn" class="flag" title="${countrydata["names"][currentValue["side2"]]}" src="${countrydata["flags"][currentValue["side2"]]}" /><input id="conflict_${index}_side2" type="radio" name="conflict_${index}" value="${currentValue["side2"]}">
         `)
             document.getElementById(`conflict_${index}_na`).checked = true;
             if (urlParams.has(`conflict${index}`)) {
