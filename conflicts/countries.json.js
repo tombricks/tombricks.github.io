@@ -72,7 +72,8 @@ var countrydata = {
         "ETH": "flags/ethiopia.png",
         "TIG": "flags/tigray.png",
         "BOS": "flags/bos.png",
-        "SRP": "flags/srpska.png"
+        "SRP": "flags/srpska.png",
+        "IRR": "flags/irish republic.png"
     },
     "names": {
         "ISR": "Israel",
@@ -147,6 +148,7 @@ var countrydata = {
         "ETH": "Ethiopia",
         "TIG": "Tigray",
         "BOS": "Bosnia",
-        "SRP": "Srpska"
+        "SRP": "Srpska",
+        "IRR": "Irish Republic"
     }
 }

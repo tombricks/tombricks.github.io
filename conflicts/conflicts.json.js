@@ -146,6 +146,12 @@ var conflictdata = {
             "side2": "ULS"
         },
         {
+            "column": "Europe",
+            "name": "Republican Ireland",
+            "side1": "IRE",
+            "side2": "IRR"
+        },
+        {
             "column": "Americas",
             "name": "Falklands Conflict",
             "side1": "ENG",
