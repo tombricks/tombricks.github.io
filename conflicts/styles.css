@@ -1,0 +1,29 @@
+img.flag {
+    border: 3px solid gold;
+    width: 45px;
+    height: 30px;
+    padding: 2px;
+}
+
+input {
+    transform: scale(1.5);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+body {
+    text-align: center;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    vertical-align: auto;
+}
+
+.column {
+    float: left;
+    width: 16.667%;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
