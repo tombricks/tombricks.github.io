@@ -8,16 +8,16 @@ conflictdata["columns"].forEach((column, columnI, columnA) => {
     conflictdata["conflicts"].forEach((currentValue, index, arr) => {
         if (currentValue["column"] == column) {
             document.write(`<h3>${currentValue["name"]}</h3>
-        <input id="conflict_${index}_side1" type="radio" name="conflict_${index}" value="${currentValue["side1"]}"><img title="${countrydata["names"][currentValue["side1"]]}" id="conflict_${index}_side1btn" onclick="buttonClick(1, ${index})" class="flag" src="${countrydata["flags"][currentValue["side1"]]}" />
-        <input id="conflict_${index}_na" type="radio" name="conflict_${index}" value="neither">
-        <img onclick="buttonClick(2, ${index})" id="conflict_${index}_side2btn" class="flag" title="${countrydata["names"][currentValue["side2"]]}" src="${countrydata["flags"][currentValue["side2"]]}" /><input id="conflict_${index}_side2" type="radio" name="conflict_${index}" value="${currentValue["side2"]}">
+        <input id="conflict_${currentValue["id"]}_side1" type="radio" name="conflict_${currentValue["id"]}" value="${currentValue["side1"]}"><img title="${countrydata["names"][currentValue["side1"]]}" id="conflict_${currentValue["id"]}_side1btn" onclick="buttonClick(1, ${currentValue["id"]})" class="flag" src="${countrydata["flags"][currentValue["side1"]]}" />
+        <input id="conflict_${currentValue["id"]}_na" type="radio" name="conflict_${currentValue["id"]}" value="neither">
+        <img onclick="buttonClick(2, ${currentValue["id"]})" id="conflict_${currentValue["id"]}_side2btn" class="flag" title="${countrydata["names"][currentValue["side2"]]}" src="${countrydata["flags"][currentValue["side2"]]}" /><input id="conflict_${currentValue["id"]}_side2" type="radio" name="conflict_${currentValue["id"]}" value="${currentValue["side2"]}">
         `)
-            document.getElementById(`conflict_${index}_na`).checked = true;
-            if (urlParams.has(`conflict${index}`)) {
-                console.log(`${index} is there: ${urlParams.get(`conflict${index}`)}`)
-                if (urlParams.get(`conflict${index}`) == "1") { document.getElementById(`conflict_${index}_side1`).checked = true; }
-                else if (urlParams.get(`conflict${index}`) == "2") { document.getElementById(`conflict_${index}_side2`).checked = true; }
-                else if (urlParams.get(`conflict${index}`) == "na") { document.getElementById(`conflict_${index}_na`).checked = true; }
+            document.getElementById(`conflict_${currentValue["id"]}_na`).checked = true;
+            if (urlParams.has(`conflict${currentValue["id"]}`)) {
+                console.log(`${currentValue["id"]} is there: ${urlParams.get(`conflict${currentValue["id"]}`)}`)
+                if (urlParams.get(`conflict${currentValue["id"]}`) == "1") { document.getElementById(`conflict_${currentValue["id"]}_side1`).checked = true; }
+                else if (urlParams.get(`conflict${currentValue["id"]}`) == "2") { document.getElementById(`conflict_${currentValue["id"]}_side2`).checked = true; }
+                else if (urlParams.get(`conflict${currentValue["id"]}`) == "na") { document.getElementById(`conflict_${currentValue["id"]}_na`).checked = true; }
             }
         }
     });
@@ -32,14 +32,14 @@ function buttonClick(side, conflict) {
 function share() {
     app = window.location.href.split('?')[0] + "?"
     conflictdata["conflicts"].forEach((currentValue, index, arr) => {
-        if (document.getElementById(`conflict_${index}_na`).checked) {
-            app += `conflict${index}=na&`
+        if (document.getElementById(`conflict_${currentValue["id"]}_na`).checked) {
+            app += `conflict${currentValue["id"]}=na&`
         }
-        else if (document.getElementById(`conflict_${index}_side1`).checked) {
-            app += `conflict${index}=1&`
+        else if (document.getElementById(`conflict_${currentValue["id"]}_side1`).checked) {
+            app += `conflict${currentValue["id"]}=1&`
         }
-        else if (document.getElementById(`conflict_${index}_side2`).checked) {
-            app += `conflict${index}=2&`
+        else if (document.getElementById(`conflict_${currentValue["id"]}_side2`).checked) {
+            app += `conflict${currentValue["id"]}=2&`
         }
     });
     document.getElementById("sharelink").setAttribute("value", app);
@@ -50,7 +50,7 @@ function clearv() {
     result = confirm("Are you sure you want to clear all values?")
     if (result) {
         conflictdata["conflicts"].forEach((currentValue, index, arr) => {
-            document.getElementById(`conflict_${index}_na`).checked = true;
+            document.getElementById(`conflict_${currentValue["id"]}_na`).checked = true;
         });
     }
 }
