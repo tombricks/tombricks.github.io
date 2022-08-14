@@ -153,6 +153,12 @@ var conflictdata = {
         },
         {
             "column": "Europe",
+            "name": "Havering Independence",
+            "side1": "ENG",
+            "side2": "HVR"
+        },
+        {
+            "column": "Europe",
             "name": "Northern Ireland Conflict",
             "side1": "ENG",
             "side2": "IRE"

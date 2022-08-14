@@ -106,7 +106,8 @@ var countrydata = {
         "ZIM": "flags/zimbabwe.png",
         "ERI": "flags/eritrea.png",
         "PNG": "flags/png.png",
-        "BOU": "flags/bougainville.png"
+        "BOU": "flags/bougainville.png",
+        "HVR": "flags/havering.png"
     },
     "names": {
         "ISR": "Israel",
@@ -215,6 +216,7 @@ var countrydata = {
         "ZIM": "Zimbabwe",
         "ERI": "Eritrea",
         "PNG": "Papau New Guinea",
-        "BOU": "Bougainville"
+        "BOU": "Bougainville",
+        "HVR": "Havering"
     }
 }
