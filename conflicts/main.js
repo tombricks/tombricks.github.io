@@ -62,11 +62,14 @@ window.onbeforeunload = function ()
 
 function takeScreen() {
     share()
+    const newImg = document.createElement("img");
+    document.getElementById("output").parentElement.replaceChild(newImg, document.getElementById("output"));
+    newImg.id = "output";
     html2canvas(document.body, {
         scrollX: 0,
         scrollY: 0
     }).then(function(canvas) {
-        canvas.id = "output";
         document.getElementById("output").parentElement.replaceChild(canvas, document.getElementById("output"));
+        canvas.id = "output";
     });
 }
