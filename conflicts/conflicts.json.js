@@ -176,6 +176,12 @@ var conflictdata = {
             "side2": "IRR"
         },
         {
+            "column": "Europe",
+            "name": "Reichsbürger Movement",
+            "side1": "GER",
+            "side2": "REI"
+        },
+        {
             "column": "Americas",
             "name": "Falklands Conflict",
             "side1": "ENG",
