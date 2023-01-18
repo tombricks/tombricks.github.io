@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HOI4 Country and News Event Creator</title>
+        <meta content="HOI4 Country and News Event Creator" property="og:title" />
+        <meta content="Simple webpage that allows you to edit the diplomatic screen and a news event - like vanilla low-effort super events!" property="og:description" />
+        <meta content="#111111" data-react-helmet="true" name="theme-color" />
+        <style>
+            .element {
+                position: absolute;
+                transform-origin: left;
+            }
+            .center {
+                transform: translate(-50%, -50%);
+            }
+            p {
+                font-family: 'Verdana', sans-serif;
+                font-weight: bold;
+                color: white;
+                text-shadow: 2px 2px 2px #000;
+                width: 500px;
+            }
+            .event-p {
+                font-family: 'Times New Roman', sans-serif;
+                color: black;
+                text-shadow: 0px 0px 0px;
+                width: 490px;
+                font-weight: normal;
+            }
+            @font-face {
+                font-family: 'Ubuntu';
+                src: url('assets/Ubuntu.ttf');
+            }
+            .click {
+                cursor: pointer;
+            }
+            .noclick {
+                pointer-events: none;
+            }
+            #pol-circle {
+                left: 154px;
+                top: 129px;
+                background-color: #888888;
+                border-radius: 50%;
+                width: 63px;
+                height: 63px;
+            }
+            body {
+                background-color: #111111;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="diplomatic" style="left: 15px; top: 15px;" class="element">
+            <label for="img-input"><img id="flag" style="left: 33px; top: 7px; width: 84px; height: 53px;" class="element click" src="assets/flag_unknown.png" onclick="target='flag'"/></label>
+            <label for="img-input"><img id="portrait" style="left: 16px; top: 122px; width: 116px; height: 156px;" class="element click" src="assets/leader_unknown.png" onclick="target='portrait'"/></label>
+            <img style="left: 0px; top: 0px;" class="element noclick" src="assets/background.png" />
+            <label for="img-input"><img id="ideology" style="left: 186px; top: 38px" class="element center click" src="assets/unknown.png" onclick="target='ideology'"/></label>
+            <label for="color-input"><span id="pol-circle" class="element click"></span></label>
+            <img id="circle-overlay" style="left: 150px; top: 125px;" class="element noclick" src="assets/pol_piechart_overlay.png" />
+
+            <p id="country-name" style="left: 240px; top: -8px; font-size: 15px;" class="element" contenteditable="true">Country Name</p>
+            <p id="faction" style="left: 240px; top: 13px; font-size: 15px;" class="element" contenteditable="true">Faction Name</p>
+            <p id="country-leader" style="left: 240px; top: 36px; font-size: 13px;" class="element" contenteditable="true">Leader Name</p>
+
+            <p id="party" style="left: 263px; top: 122px; font-size: 13px;" class="element" contenteditable="true">Party Name</p>
+            <p id="ideology" style="left: 263px; top: 140px; font-size: 13px;" class="element" contenteditable="true">Ideology</p>
+            <p id="election" style="left: 263px; top: 158px; font-size: 13px;" class="element" contenteditable="true">Election Label</p>
+            
+
+            <p id="focus" style="left: 240px; top: 218px; font-size: 13px; text-align: center; width: 285px;" class="element" contenteditable="true">Focus Name</p>
+
+            <label for="img-input"><img id="focus-icon" style="left: 185px; top: 242px; transform: scale(90%) translate(-50%, -50%);" class="element center click" src="assets/goal_unknown.png" onclick="target='focus-icon'"/></label>
+        </div>
+
+        <div id="event" style="left: 570px; top: 5px;" class="element">
+            <img style="left: 0px; top: 0px;" class="element noclick" src="assets/event_news_bg.png" />
+            <label for="img-input"><img id="event-image" style="left: 58px; top: 90px; width: 399px; height: 155px;" class="element click" src="assets/flag_unknown.png" onclick="target='event-image'"/></label>
+            <img id="event-overlay" style="left: 58px; top: 90px; width: 399px; height: 155px;" class="element noclick" src="assets/event_news_pic_overlay.png" />
+
+            <p id="event-title" style="left: 12px; top: 238px; font-size: 22px; text-align: center;" class="element event-p" contenteditable="true">Event Title</p>
+            <p id="event-desc" style="left: 12px; top: 274px; font-size: 16px; text-align: center;" class="element event-p" contenteditable="true"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut posuere nulla, eu lacinia lacus. Vivamus ac consequat lectus, quis sagittis mi. Ut tempor magna sed tempor molestie. Mauris suscipit leo nisl, sed congue mauris rhoncus non. Sed interdum non erat non aliquam. Etiam vitae velit nec ligula convallis pulvinar. Nullam eget nunc ac ante pulvinar auctor. Nullam sagittis pulvinar malesuada. Proin consectetur lacus at congue commodo. Integer tincidunt orci arcu, sit amet tincidunt massa efficitur ut. Maecenas a metus quis mauris imperdiet gravida.</p>
+            <img id="event-button" style="left: 259px; top: 528px" class="element center noclick" src="assets/event_option_entry.png" />
+            <p id="event-option" style="left: 12px; top: 503px; font-size: 14px; text-align: center; width: 490px;" class="element" contenteditable="true">Event Option</p>
+        </div>
+
+        <input type="file" id="img-input" accept="image/jpeg, image/png" style="display: none;" onchange="image_upload()">
+        <input type="color" id="color-input" value="#888888" style="display: none;" oninput="color_change()">
+        <script src="script.js"></script>
+    </body>
+</html>
