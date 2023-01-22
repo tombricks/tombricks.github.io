@@ -1,7 +1,54 @@
+@font-face {
+    font-family: bpdots;
+    src: url("assets/bpdots.squares-bold.otf");
+  }
+
+* {
+    box-sizing: border-box;
+}
+.split {
+    flex: 50%;
+    padding: 20px;
+}
+.header {
+    padding: 0px;
+    text-align: center;
+}
+.across {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 body {
-    font-family: 'sans-serif', Trebuchet MS;
+    font-family: 'Brush Script MT', cursive;
     text-shadow: black 2px 2px 2px;
     background-color: rgb(33, 33, 33);
     color: white;
     text-align: center;
+}
+
+a {
+    color: brown;
+}
+a:hover {
+    font-weight: bold
+}
+button {
+    background-color: rgb(55, 55, 55);
+    border: 0px;
+    padding: 5px;
+    font-family: 'Brush Script MT', cursive;
+    color: white;
+}
+button:hover {
+    background-color: rgb(70, 55, 55);
+}
+
+.preview {
+    width: 400px;
+    height: 100px;
+}
+.tomoji {
+    height: 0.75em;
+    display: inline;
 }

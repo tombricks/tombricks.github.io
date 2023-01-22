@@ -1,0 +1,16 @@
+.element {
+    position: absolute;
+    transform-origin: left;
+}
+.center {
+    transform: translate(-50%, -50%);
+}
+.click {
+    cursor: pointer;
+}
+.noclick {
+    pointer-events: none;
+}
+body {
+    background-color: whitesmoke;
+}
