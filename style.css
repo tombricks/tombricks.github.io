@@ -1,6 +1,6 @@
 @font-face {
-    font-family: bpdots;
-    src: url("assets/bpdots.squares-bold.otf");
+    font-family: troll;
+    src: url("assets/COMIC.TTF");
   }
 
 * {
@@ -20,7 +20,7 @@
 }
 
 body {
-    font-family: 'Brush Script MT', cursive;
+    font-family: 'troll', sans-serif;
     text-shadow: black 2px 2px 2px;
     background-color: rgb(33, 33, 33);
     color: white;
@@ -37,7 +37,7 @@ button {
     background-color: rgb(55, 55, 55);
     border: 0px;
     padding: 5px;
-    font-family: 'Brush Script MT', cursive;
+    font-family: 'troll', sans-serif;
     color: white;
 }
 button:hover {
