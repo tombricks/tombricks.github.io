@@ -26,6 +26,7 @@ for (template of templates) {
             case "text":
                 element_html = document.createElement("p");
                 element_html.innerText = element.text;
+                element_html.setAttribute("spellcheck", "false")
                 break;
 
         }
