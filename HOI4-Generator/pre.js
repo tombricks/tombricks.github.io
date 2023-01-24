@@ -290,8 +290,8 @@ body {
         elements: [
             {
                 type: "image", src: "assets/TNO/superevent_unknown.png",
-                x: 8, y: 45,
-                width: 573,
+                x: 8, y: 53,
+                width: 572, height: 390,
                 replaceable: true
             },
             {
