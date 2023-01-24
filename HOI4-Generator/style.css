@@ -1,3 +1,7 @@
+@font-face {
+    font-family: troll;
+    src: url("../assets/COMIC.TTF");
+}
 .element {
     position: absolute;
     transform-origin: left;
@@ -20,6 +24,7 @@ p {
 #q-drop {
     color: red;
     font-weight: bold;
+    font-family: troll;
 }
 #selection {
     background-color: red;

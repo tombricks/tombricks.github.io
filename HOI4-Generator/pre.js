@@ -1,6 +1,6 @@
 var vanilla_templates = [
     {
-        x: 600,
+        x: 560,
         y: 40,
         style: `
         .hoi4-text {
@@ -66,11 +66,11 @@ var vanilla_templates = [
                 type: "text",
                 text: "Event Option",
                 x: 109,
-                y: 503,
-                width: 300,
+                y: 493,
+                width: 300, height: 36,
                 replaceable: true,
                 classes: ["hoi4-text"],
-                style: "font-size: 14px; text-align: center;"
+                style: "font-size: 14px; text-align: center; justify-content: center; display: flex; align-items: center;"
             },
         ]
     },
@@ -377,7 +377,9 @@ const urlParams = new URL(window.location.href).searchParams;
 
 if (urlParams.has("TNO")) {
     templates = tno_templates;
+    document.getElementById("q-drop").innerHTML = document.getElementById("q-drop").innerText + " <a href='index.html'>Here for Vanilla version.</a>";
 }
 else {
     templates = vanilla_templates;
+    document.getElementById("q-drop").innerHTML = document.getElementById("q-drop").innerText + " <a href='index.html?TNO'>Here for TNO version.</a>";
 }
