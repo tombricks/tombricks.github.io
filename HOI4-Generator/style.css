@@ -14,3 +14,17 @@
 body {
     background-color: whitesmoke;
 }
+p {
+    width: 400px;
+}
+#q-drop {
+    color: red;
+    font-weight: bold;
+}
+#selection {
+    background-color: red;
+    border: 5px yellow solid;
+    position: absolute;
+    width: 600px;
+    height: 400px;
+}

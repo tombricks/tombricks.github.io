@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>HOI4 Country/News Generator</title>
+        <meta content="HOI4 Country/News Generator" property="og:title">
+        <meta content="Simple webpage that allows you to create a HOI4 Country diplomatic screen and news event to go with it. Also has a TNO version!" property="og:description">
+        <meta content="https://tombricks.github.io/HOI4-Generator/assets/embed.png" property="og:image">
+        <meta content="#111111" data-react-helmet="true" name="theme-color">
+    </head>
+    <body>
+        <i id="q-drop">Press the space bar to show which elements can be edited!</i>
+        <input type="file" id="image-input" accept="image/jpeg, image/png" style="display: none;" onchange="image_upload()">
+        <input type="color" id="color-input" value="#888888" style="display: none;" oninput="color_change()">
+        <div id="content"></div>
+        <!-- <div id="selection"></div> -->
+        <script src="pre.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
