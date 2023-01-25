@@ -155,7 +155,7 @@ var vanilla_templates = [
             {
                 type: "image", src: "assets/vanilla/goal_unknown.png",
                 x: 185, y: 242,
-                classes: ["center"], style: "transform: scale(90%) translate(-50%, -50%);",
+                classes: ["center"], style: "transform: scale(90%) translate(-50%, -55%);",
                 replaceable: true
             },
             {
@@ -272,7 +272,7 @@ body {
             {
                 type: "image", src: "assets/vanilla/goal_unknown.png",
                 x: 175, y: 191,
-                classes: ["center"], style: "transform: scale(90%) translate(-50%, -50%);",
+                classes: ["center"], style: "transform: scale(90%) translate(-50%, -55%);",
                 replaceable: true
             },
             {
