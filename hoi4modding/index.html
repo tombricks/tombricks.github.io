@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HOI4 National Focus Creator</title>
+        <link rel="stylesheet" href="styles.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto Slab' rel='stylesheet'>
+        <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+        <script src="scripts/jquery-3.6.1.js"></script>
+        <script src="scripts/focus-gfx.json.js"></script>
+        <script src="scripts/focus.js"></script>
+    </head>
+    <body>
+        <div style="width: 100%; overflow: hidden;"></div>
+            <div id="left-panel">
+                <h1>HOI4 National Focus Creator</h1>
+                <button onclick="export_focuses()">Export Focuses</button>
+                <button onclick="load_focuses()">Load Focuses</button>
+                <hr>
+                <div id="edit-focus">
+                    <button id="submit_focus" onclick="submit_focus()">Create Focus</button><br>
+                    <b>Focus ID</b>: <input onchange="focus_edit_change_id()" type="text" id="focus_id" name="focus_id"><button onclick="focus_edit_generate_id()">Generate</button><br>
+                    <b>Focus Name</b>: <input oninput="focus_edit_change_name()" type="text" id="focus_name" name="focus_name"><br>
+                    <b>Focus Description</b>:<br><textarea onchange="focus_edit_change_desc()"  id="focus_desc" name="focus_desc"></textarea><br>
+                    <b>Focus Icon</b>: <input onchange="focus_edit_change_icon()" type="text" id="focus_icon" name="focus_icon"> <button class="focus-gfx-button" onclick="focus_gfx_button()">View Focus GFX</button><br>
+                    <b>Length in weeks</b>: <input oninput="focus_edit_change_cost()" type="number" id="focus_cost" name="focus_cost"><br>
+                    <b>Position</b>: X: <input onchange="focus_edit_change_x()" min=0 step=1 value=0 type="number" id="focus_x" name="focus_x">Y: <input onchange="focus_edit_change_y()" min=0 step=1 value=0 type="number" id="focus_y" name="focus_y"><br>
+                    <b>Mutually Exclusive</b>:<br>
+                    <div id="focus_mutual_box">
+                        <div id="focus_mutuals"></div>
+                        <button onclick="focus_edit_add_mutual()" id="add_mutual">+</button>
+                    </div>
+                    <div id="focus_prereq_all">
+                        <b>Prerequisites</b>:<br>
+                        <div id="focus_prereq_box">
+                            <div id="prereq-container">
+                            </div>
+                            <button onclick="focus_edit_add_prereq()" id="add_prereq">+</button>
+                        </div>
+                    </div>
+                    <br>
+                    <b>Available (Trigger Block)</b>:
+                    <div id="focus_monaco_available" class="monaco-container"></div><br>
+                    <b>Bypass (Trigger Block)</b>:
+                    <div id="focus_monaco_bypass" class="monaco-container"></div><br>
+                    <b>Completion Reward (Effect Block)</b>:
+                    <div id="focus_monaco_reward" class="monaco-container"></div><br>
+                    <button onclick="$('#focus_edit_collapse_container').toggle()" type="button" id="focus_edit_collapse_btn">Toggle Advanced</button>
+                    <div style="display:none" id="focus_edit_collapse_container">
+                        <h2>Advanced</h2>
+                        <b>Allow Branch (Trigger Block)</b>:
+                        <div id="focus_monaco_allow" class="monaco-container"></div><br>
+                        <b>Cancel (Trigger Block)</b>:
+                        <div id="focus_monaco_cancel" class="monaco-container"></div><br>
+                        <b>Historical AI (Trigger Block)</b>:
+                        <div id="focus_monaco_historical" class="monaco-container"></div><br>
+                        <b>Complete Tooltip (Effect Block)</b>:
+                        <div id="focus_monaco_tooltip" class="monaco-container"></div><br>
+                        <b>Select Effect (Effect Block)</b>:
+                        <div id="focus_monaco_select" class="monaco-container"></div><br>
+                    </div>
+                </div>
+            </div>
+            <div id="focus-panel">
+                <div id="focus-panel-focuses">
+                    <div id="line-container"></div>
+                </div>
+                <div id="focus-gfx-panel">
+                    <button class="focus-gfx-button" onclick="focus_gfx_button()">View Focus GFX</button>
+                    <div id="focus-gfx-panel-gfx"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

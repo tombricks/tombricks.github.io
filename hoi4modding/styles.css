@@ -1,0 +1,127 @@
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    color: whitesmoke;
+    text-shadow: 2px 2px 4px #000000;
+    font-family: 'Roboto Slab';
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+#left-panel {
+    width: 33%;
+    float: left;
+    background-color: lightgray;
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 30px;
+    overflow: auto;
+}
+#focus-panel {
+    margin-left: 33%;
+    position:relative;
+    background-image: url("assets/bg/focus top.png"), url("assets/bg/focus bottom.png"), url("assets/bg/repeatbg.png");
+    background-position: top, bottom, center;
+    background-repeat: repeat-x, repeat-x, repeat;
+    background-attachment: fixed;
+    height: 100%;
+    background-color: green;
+    overflow: auto;
+    padding: 0px;
+    margin: 0px;
+}
+#focus-panel-focuses {
+    position: relative;
+}
+#line-container {
+    position:relative;
+}
+.focus {
+    position: absolute;
+    width: 165px;
+    height: 128px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.focus:hover {
+    transform: scale(1.1);
+}
+.half-opacity {
+    opacity: 50%;
+}
+.center {
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    text-align: center;
+}
+.line {
+    background: #607995;
+}
+.prerequisite-or {
+    background: none;
+    border-color: #607995;
+    border-top-style: dashed;
+    border-width: 2px;
+    border-left-style: dashed;
+}
+.mutually-exclusive {
+    background: lightcoral;
+}
+#focus_prereq_box {
+    background: #FFFFFF;
+    width: 100%;
+    padding: 10px;
+}
+#add_prereq {
+    width: 100%;
+}
+.focus_prereq_entry {
+    border: 2px;
+    border-style: solid;
+    border-color: white;
+}
+#focus-gfx-panel {
+    width: 600px;
+    height: 100%;
+    backdrop-filter: blur(10px);
+}
+#focus-gfx-panel-gfx {
+    width: 600px;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* fraction*/
+    overflow: auto;
+}
+.focus-gfx {
+    height: 125px;
+    overflow: hidden;
+    position: relative;
+}
+.focus-gfx-icon {
+    position: absolute;
+    top: 45px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.focus-gfx-icon:hover {
+    transform: scale(1.1);
+}
+.monaco-container {
+	width: 100%;
+    min-height: 100px;
+	margin: 0;
+	padding: 0;
+}
+#focus_edit_collapse_container {
+    background-color: #00000044;
+    padding: 5px;
+}
+.textarea {
+    width: 100%;
+}
