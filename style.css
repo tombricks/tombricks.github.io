@@ -46,6 +46,7 @@ button:hover {
 }
 
 .preview {
+    max-width: 100%;
 }
 .tomoji {
     height: 0.75em;
