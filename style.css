@@ -45,10 +45,12 @@ button:hover {
 }
 
 .preview {
-    width: 400px;
-    height: 100px;
 }
 .tomoji {
     height: 0.75em;
     display: inline;
+}
+.project {
+    width: 50%;
+    vertical-align: top;
 }
