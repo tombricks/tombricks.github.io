@@ -107,7 +107,7 @@ body {
     position: absolute;
     top: 45px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.1s;
 }
 .focus-gfx-icon:hover {
     transform: scale(1.1);

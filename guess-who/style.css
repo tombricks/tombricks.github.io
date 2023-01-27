@@ -1,0 +1,40 @@
+@font-face {
+    font-family: troll;
+    src: url("../assets/COMIC.TTF");
+}
+
+body {
+    background-color: rgb(50, 10, 10);
+    color: antiquewhite;
+    text-align: center;
+    margin: auto;
+    font-family: troll;
+}
+.entry-thumb {
+    width: 125px;
+    height: 125px;
+}
+.entry-label {
+    font-weight: bold;
+}
+.entry {
+    width: 150px;
+    height: 150px;
+    background-color: antiquewhite;
+    border: 2px solid rgb(50, 10, 10);
+    text-align: center;
+    vertical-align: center;
+    color: rgb(50, 10, 10);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.entry:hover {
+    transform: scale(1.1);
+}
+table {
+    text-align: center;
+    margin: auto;
+}
+.entry-selected {
+    opacity: 10%;
+}

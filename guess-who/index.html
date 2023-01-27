@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Guess Who</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <h1>Guess Who</h1>
+        <b>Game Data</b><br>
+        <textarea style="width:90%;" id="guess-code"></textarea><br>
+        <button id="guess-submit" onclick="guess_submit()" >Submit</button>
+        <hr>
+        <b>Selected Character: </b><text id="selected-character"></text> <button id="generate" onclick="generate()">Generate</button>
+        <br>
+        <div id="guess-content">
+            <table id="da-table">
+            </table>
+        </div>
+    </body>
+</html>
