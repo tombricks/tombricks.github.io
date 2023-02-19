@@ -16,7 +16,7 @@ body {
     width: 350px;
     height: 100%;
     vertical-align: middle;
-    transition: all .1s ease-in-out;
+    transition: all .1s ease;
 }
 #left-bar-button {
     position: absolute;
@@ -25,15 +25,21 @@ body {
 #content {
     position: absolute;
     left: 373px;
-    transition: all .1s ease-in-out;
+    transition: all .1s ease;
 }
 
-
-img.flag {
+div.circle {
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+}
+.flag {
     border: 4px solid lightgray;
     width: 45px;
     height: 30px;
-    transition: all .1s ease-in-out;
+    transition: all .1s ease;
     background-color: lightgray;
 }
 img.flag:hover {
@@ -67,7 +73,7 @@ td {
     padding-bottom: 15px;
 }
 th {
-    transition: all .1s ease-in-out;
+    transition: all .1s ease;
 }
 th:hover {
     scale: 1.1;

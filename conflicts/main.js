@@ -1,47 +1,59 @@
 globalChange = false;
 const queryString = window.location.search;
-
+conDict = {};
 const urlParams = new URLSearchParams(queryString);
 i = 0;
 text = "";
 left = "";
+data = {};
+
+for (c in conflictdata["conflicts"]) {
+    for (t of conflictdata["conflicts"][c]) {
+        conDict[t["id"]] = t;
+        data[t["id"]] = null;
+    }
+}
 for (column in conflictdata["conflicts"]) {
     left += `<input type="checkbox" id="conflict_${i}_checkbox" checked onchange="enable_column(${i})"> ${column}<br><br>`;
 
     columnrow = `<tr id="conflict_${i}">`
     columnrow += (`<td><h1>${column}</h1></td>`)
     conflictdata["conflicts"][column].forEach((currentValue, index, arr) => {
-        console.log(i);
-        imgs = "";
-        inputs = "";
-        t = 0;
-        for (country of currentValue["sides"]) {
-            if (Array.isArray(country)) {
-                imgs += `<th>`
-                for (country2 of country) {
-                    imgs += `<img title="${countrydata["names"][country2]}" onclick="buttonClick(${t}, ${i})" class="conflict_${i}_side_${t}_btn flag flag-${i}" data-id=${i} src="${countrydata["flags"][country2]}" /><br>`
-                }
-                imgs += `</th>`
-            }
-            else{
-                imgs += `<th><img title="${countrydata["names"][country]}" onclick="buttonClick(${t}, ${i})" class="conflict_${i}_side_${t}_btn flag flag-${i}" data-id=${i} src="${countrydata["flags"][country]}" /></th>`
-            }
-            inputs += `<th><input onchange="onthechange(${t}, ${i})" onclick="buttonClick(${t}, ${i})" id="conflict_${i}_side_${t}" type="radio" name="conflict_${i}" value="${t}" autocomplete="off"></th>`
-            t++;
+        if (typeof(currentValue) === "string") {
+            currentValue = conDict[currentValue];
+            console.log("String:", currentValue);
         }
-        columnrow += (`
-<td><div class="conflictbox"><span class="conflict-name">${currentValue["name"]}</span>
-<table class="content-table">
-<tr style="display: table-row; vertical-align: middle;">
-    ${imgs}
-</tr>
-<tr style="display: table-row; vertical-align: middle;">
-    ${inputs}
-</tr>
-</table>
-</div></td>
-        `);
-        i++;
+            console.log(i);
+            imgs = "";
+            inputs = "";
+            t = 0;
+            for (country of currentValue["sides"]) {
+                if (Array.isArray(country)) {
+                    imgs += `<th>`
+                    for (country2 of country) {
+                        imgs += `<img title="${countrydata["names"][country2]}" onclick="buttonClick(${t}, '${currentValue["id"]}')" class="conflict_${currentValue["id"]}_side_${t}_btn flag flag-${currentValue["id"]}" data-id='${currentValue["id"]}' src="${countrydata["flags"][country2]}" /><br>`
+                    }
+                    imgs += `</th>`
+                }
+                else{
+                    imgs += `<th><img title="${countrydata["names"][country]}" onclick="buttonClick(${t}, '${currentValue["id"]}')" class="conflict_${currentValue["id"]}_side_${t}_btn flag flag-${currentValue["id"]}" data-id='${currentValue["id"]}' src="${countrydata["flags"][country]}" /></th>`
+                }
+                inputs += `<th><div onclick="buttonClick(${t}, '${currentValue["id"]}')" class="circle conflict_${currentValue["id"]}_side_${t}_btn flag flag-${currentValue["id"]}" data-id='${currentValue["id"]}' /></th>`
+                t++;
+            }
+            columnrow += (`
+    <td><div class="conflictbox"><span class="conflict-name">${currentValue["name"]}</span>
+    <table class="content-table">
+    <tr style="display: table-row; vertical-align: middle;">
+        ${imgs}
+    </tr>
+    <tr style="display: table-row; vertical-align: middle;">
+        ${inputs}
+    </tr>
+    </table>
+    </div></td>
+            `);
+            i++;
     });
     columnrow += ("</tr>")
     text += (columnrow);
@@ -75,23 +87,26 @@ function enable_column(i) {
     }
 }
 
-function onthechange(side, conflict) {
-    document.getElementById(`conflict_${conflict}_side_${side}`).checked = false;
-    buttonClick(side, conflict);
-}
 function buttonClick(side, conflict) {
     console.log("buttonClick", side, conflict);
     for (el of document.getElementsByClassName("flag-"+conflict)) {
+        el.style.backgroundColor = "";
         el.style.border = "";
+        el.style.scale = "";
     }
-    if (document.getElementById(`conflict_${conflict}_side_${side}`).checked) {
-        document.getElementById(`conflict_${conflict}_side_${side}`).checked = false;
+    if (data[conflict] == side) {
+        data[conflict] = null;
     }
     else {
-        for (el of document.getElementsByClassName(`conflict_${conflict}_side_${side}_btn`)) {
-            el.style.border = "4px solid gold"
+        for (el of document.getElementsByClassName("flag-"+conflict)) {
+            el.style.scale = "0.9";
         }
-        document.getElementById(`conflict_${conflict}_side_${side}`).checked = true;
+        for (el of document.getElementsByClassName(`conflict_${conflict}_side_${side}_btn`)) {
+            el.style.backgroundColor = "gold";
+            el.style.border = "4px solid gold"
+            el.style.scale = "1.1";
+        }
+        data[conflict] = side;
     }
 }
 
@@ -127,7 +142,7 @@ window.onbeforeunload = function ()
 };
 
 function takeScreen() {
-    alert("Image will open in new tab!")
+    alert("Image will open in new tab! It may take a few seconds.")
     html2canvas(document.getElementById("content"), {
         scrollX: 0,
         scrollY: 0
