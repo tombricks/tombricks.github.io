@@ -146,7 +146,7 @@ var conflictdata = {
                 "sides": ["HVR", "ENG"]
             }
         ],
-        "English Civil Wars (1088-1652)": [
+        "English Civil Wars and Revolutions": [
             {
                 "name": "Rebellion of 1088",
                 "sides": ["ENG-william-rufus", "ENG-robert-curthose"]
