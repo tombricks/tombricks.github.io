@@ -1,0 +1,90 @@
+* {
+    --CoI-left-bar-width: 500px;
+}
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Ubuntu', sans-serif;
+}
+#mapSvgDiv {
+    height: 100vh;
+    overflow: hidden;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+}
+#CoI-left-bar {
+    left: 0px;
+    right: 0px;
+    width: var(--CoI-left-bar-width);
+    height: 100%;
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+}
+.shadow {
+    box-shadow: 0 0 4px black;
+}
+#CoI-map-div {
+    position: absolute;
+    width: calc(100vw - var(--CoI-left-bar-width));
+    left: var(--CoI-left-bar-width);
+}
+.CoI-ui-element {
+    position: absolute;
+}
+.CoI-ui-default {
+    background-color: #444444;
+    border: 4px solid grey;
+    color: white;
+}
+.CoI-map-label {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    width: fit-content;
+    translate: -50% -50%;
+    padding: -5px;
+}
+.CoI-map-element-invisible {
+    display: none;
+}
+.CoI-map-element-opacity {
+    opacity: 0;
+}
+.CoI-tile-point {
+    pointer-events: none;
+}
+.CoI-map-line {
+}
+.CoI-map-tile {
+}
+.CoI-map-tile-hover {
+    filter: brightness(0.75);
+}
+.CoI-map-tile-hover-next {
+    /* filter: brightness(1.25); */
+}
+#debug {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.diagonal-svg {
+    width: 100%;
+    height: 100%;
+}
+.diagonal-line {
+    stroke: black;
+    stroke-width: 0;
+}
+.CoI-map-line-conn {
+    stroke-width: 3px;
+}
+#tooltip {
+    padding: 5px;
+    pointer-events: none;
+}

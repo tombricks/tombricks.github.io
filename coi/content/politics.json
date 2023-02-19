@@ -1,0 +1,14 @@
+{
+    "laws": {
+        "constitutional_structure": [
+            "unitary_state",
+            "unitary_devolved_state",
+            "federal_state",
+            "confederal_state"
+        ],
+        "constitutional_type": [
+            "monarchy",
+            "republic"
+        ]
+    }
+}

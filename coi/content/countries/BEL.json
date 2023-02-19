@@ -1,0 +1,10 @@
+[
+    {
+        "type": "set_colour",
+        "colour": "#c1ab08"
+    },
+    {
+        "type": "set_cosmetic_flag",
+        "flag": "assets/flags/BEL.png"
+    }
+]

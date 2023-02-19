@@ -1,0 +1,10 @@
+[
+    {
+        "type": "set_colour",
+        "colour": "#fcd116"
+    },
+    {
+        "type": "set_cosmetic_flag",
+        "flag": "assets/flags/ROM.png"
+    }
+]

@@ -1,0 +1,10 @@
+[
+    {
+        "type": "set_colour",
+        "colour": "#ee8f10"
+    },
+    {
+        "type": "set_cosmetic_flag",
+        "flag": "assets/flags/MOL.png"
+    }
+]

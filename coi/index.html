@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../jquery-3.6.1.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom-container@0.6.1"></script>
+    <script src='https://unpkg.com/ngraph.graph@20.0.1/dist/ngraph.graph.min.js'></script>
+    <script src='https://unpkg.com/ngraph.path@1.3.1/dist/ngraph.path.min.js'></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <title>Conflict of Interests</title>
+</head>
+
+<body>
+    <div id="CoI-map-div">
+        <div id="mapSvgDiv" data-zoom-on-wheel="max-scale: 25;" data-pan-on-drag></div>
+        <div id="paths"></div>
+        <div id="labels"></div>
+        <div id="debug">
+            <button onclick="debugButton('labels')">Toggle Map Labels</button><br>
+            <button onclick="debugButton('tile-points')">Toggle Tile Points</button>
+        </div>
+    </div>
+    <div id="CoI-left-bar" class="CoI-ui-default CoI-ui-element"></div>
+    <div id="tooltip" class="shadow CoI-ui-default CoI-ui-element" style="display: none;"></div>
+</body>
+
+</html>

@@ -1,0 +1,8 @@
+{
+    "unitary_state": { "type": "law", "allowed": [], "visible": [], "available": [], "on_add": [], "on_remove": [] },
+    "unitary_devolved_state": { "type": "law", "allowed": [], "visible": [], "available": [], "on_add": [], "on_remove": [] },
+    "federal_state": { "type": "law", "allowed": [], "visible": [], "available": [], "on_add": [], "on_remove": [] },
+    "confederal_state": { "type": "law", "allowed": [], "visible": [], "available": [], "on_add": [], "on_remove": [] },
+    "monarchy": { "type": "law", "allowed": [], "visible": [], "available": [], "on_add": [], "on_remove": [] },
+    "republic": { "type": "law", "allowed": [], "visible": [], "available": [], "on_add": [], "on_remove": [] }
+}

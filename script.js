@@ -53,6 +53,22 @@ function random_government() {
     return total;
 }
 
+function random_government_2() {
+    var constitutional = weighted_random(["unitary", "federal", "confederal", ""], [80, 20, 1, 5]);
+    var state_type = weighted_random(["republic", "monarchy"], [11, 1]);
+    var executive = "";
+    if (state_type == "republic") {
+        state_type = weighted_random(["republic", "constitutional republic"], [15, 1]);;
+        executive = weighted_random(["presidential", "semi-presidential", "parliamentary"], [3, 2, 3]);
+    }
+    else {
+        state_type = weighted_random(["monarchy", "elective monarchy", "hereditary monarchy"], [15, 2, 2]);;
+        executive = weighted_random(["absolute", "parliamentary semi-constitutional", "parliamentary constitutional"], [2, 3, 10]);
+    }
+    govt = `${constitutional} ${executive} ${state_type}`;
+    return govt;
+}
+
 function toggleDiv(id) {
     var div = document.getElementById(id);
     div.style.display = div.style.display == "none" ? "block" : "none";

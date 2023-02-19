@@ -8,20 +8,14 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <div class="row">
-            <div id="content">
-                <script src="main.js"></script>
-            </div>
-            <div class="column">
-                <hr><h1><i>Settings</i></h1><hr>
-                <button onclick="share()">Share Link</button>
-                <br><br>
-                <input wrap="virtual" type="text" id="sharelink"><br><br>
-                <button onclick="takeScreen()">Take Screenshot</button>
-                <img id="output" />
-                <br><br>
-                <button onclick="clearv()">Clear All</button>
-            </div>
-        </div> 
+        <div id="content">
+            <table id="main-table">
+            </table>
+        </div>
+        <div id="left-bar">
+            <button id="left-bar-button" onclick="left_button()">-</button>
+            <button onclick="takeScreen()">Take Screenshot</button><br><br>
+        </div>
+        <script src="main.js"></script>
     </body>
 </html>

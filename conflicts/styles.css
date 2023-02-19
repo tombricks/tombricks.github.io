@@ -1,8 +1,43 @@
+body {
+    text-align: center;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    vertical-align: auto;
+    padding: 0px;
+    margin: 0px;
+}
+#left-bar {
+    text-align: left;
+    border-right: 3px lightgray solid;
+    padding: 10px;
+    background-color: white;
+    position: fixed;
+    left: 0; right: 0;
+    z-index: 500;
+    width: 350px;
+    height: 100%;
+    vertical-align: middle;
+    transition: all .1s ease-in-out;
+}
+#left-bar-button {
+    position: absolute;
+    left: 373px;
+}
+#content {
+    position: absolute;
+    left: 373px;
+    transition: all .1s ease-in-out;
+}
+
+
 img.flag {
-    border: 3px solid gold;
+    border: 4px solid lightgray;
     width: 45px;
     height: 30px;
-    padding: 2px;
+    transition: all .1s ease-in-out;
+    background-color: lightgray;
+}
+img.flag:hover {
+    cursor: pointer;
 }
 
 input {
@@ -10,42 +45,53 @@ input {
     position: relative;
     padding-bottom: 15px;
 }
-
-body {
-    text-align: center;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    vertical-align: auto;
+button {
+    padding: 5px;
 }
-@media only screen and (min-width: 500px) {
-    .column {
-        float: left;
-        width: 50%;
-    }
-
+.column {
+    float: left;
+    height: 100%;
 }
-@media only screen and (min-width: 1000px) {
-    .column {
-        float: left;
-        width: 25%;
-    }
-
+.conflict-name {
+    font-weight: bold;
+    font-size: 1.1em;
 }
-@media only screen and (min-width: 1400px) {
-    .column {
-        float: left;
-        width: 20%;
-    }
 
+table {
+	display: table;
 }
-@media only screen and (min-width: 1750px) {
-    .column {
-        float: left;
-        width: 12.5%;
-    }
+table tr td {
+	display: block;
+}
+td {
+    padding-bottom: 15px;
+}
+th {
+    transition: all .1s ease-in-out;
+}
+th:hover {
+    scale: 1.1;
+}
+table tr {
+    display: table-cell;
+}
 
+
+#main-table {
+    table-layout: fixed;
 }
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
+#main-table tr {
+    vertical-align: top;
+    min-width: 250px;
+    max-width: 250px;
+}
+
+
+.content-table {
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+}
+.content-table tr {
+    display: table-row;
 }

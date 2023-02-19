@@ -1,0 +1,10 @@
+[
+    {
+        "type": "set_colour",
+        "colour": "#00966e"
+    },
+    {
+        "type": "set_cosmetic_flag",
+        "flag": "assets/flags/BUL.png"
+    }
+]

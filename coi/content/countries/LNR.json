@@ -1,0 +1,10 @@
+[
+    {
+        "type": "set_colour",
+        "colour": "#676497"
+    },
+    {
+        "type": "set_cosmetic_flag",
+        "flag": "assets/flags/LNR.png"
+    }
+]

@@ -1,0 +1,10 @@
+[
+    {
+        "type": "set_colour",
+        "colour": "#ffffff"
+    },
+    {
+        "type": "set_cosmetic_flag",
+        "flag": "assets/flags/FIN.png"
+    }
+]
