@@ -127,6 +127,7 @@ window.onbeforeunload = function ()
 };
 
 function takeScreen() {
+    alert("Image will open in new tab!")
     html2canvas(document.getElementById("content"), {
         scrollX: 0,
         scrollY: 0
