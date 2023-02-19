@@ -102,48 +102,34 @@ var conflictdata = {
                 "sides": ["GRE", "TUR"]
             }
         ],
-        "Historical Wars": [
+        "Cold War: Post-War Period": [
             {
-                "name": "War for the Independence of Brazil",
-                "sides": ["BRZ-em", "POR-uk"]
+                "name": "Iran Crisis",
+                "sides": ["IRN-shah", ["AZR-pop-gov", "MAHABAD", "TUDEH"]]
             },
             {
-                "name": "American Civil War",
-                "sides": ["USA", "CSA"]
+                "name": "Greek Civil War",
+                "sides": ["GRE-kingdom", "GRE-communist"]
             },
             {
-                "name": "World War I",
-                "sides": [["FRA", "ENG", "RUS", "USA"], ["GER-KR", "AHE", "TUR", "BUL"]]
+                "name": "Chinese Civil War",
+                "sides": ["ROC", "CCP"]
             },
             {
-                "name": "World War II",
-                "sides": [["ENG", "USA", "SOV", "ROC"], ["GER-33", "ITA-WW2", "JAP"]]
-            }
-        ],
-        "Separatists (Europe)": [
-            {
-                "name": "Northern Ireland",
-                "sides": ["IRR", "IRE", "ENG", "ULS"]
+                "name": "1948 Czechoslovak coup d'etat",
+                "sides": ["CZE-NSP", "CZE-KSC"]
             },
             {
-                "name": "Scotland",
-                "sides": ["SCO", "ENG"]
+                "name": "1948 Arab-Israeli War",
+                "sides": ["ISR", "ARAB"]
             },
             {
-                "name": "Wales",
-                "sides": ["WAL", "ENG"]
+                "name": "Korean War",
+                "sides": [["ROK", "GLOBE", "USA"], ["PRK", "CHI", "SOV"]]
             },
             {
-                "name": "Northern England",
-                "sides": ["NEN", "ENG"]
-            },
-            {
-                "name": "Cornwall",
-                "sides": ["CRN", "ENG"]
-            },
-            {
-                "name": "Havering",
-                "sides": ["HVR", "ENG"]
+                "name": "Egyptian Revolution",
+                "sides": ["EGY-kingdom", "EGY-officers"]
             }
         ],
         "English Civil Wars and Revolutions": [
