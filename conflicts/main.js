@@ -61,6 +61,27 @@ for (column in conflictdata["conflicts"]) {
 document.getElementById("left-bar").innerHTML = document.getElementById("left-bar").innerHTML + left;
 document.getElementById("main-table").innerHTML = text;
 
+if (localStorage.getItem("data") !== null) {
+    data = JSON.parse(localStorage["data"]);
+    load_from_data();
+}
+
+function clear_all() {
+    for (conflict in data) {
+        set_side(null, conflict);
+    }
+}
+
+function load_from_data() {
+    for (conflict in data) {
+        if (data[conflict] == null) {
+            set_side(null, conflict);
+        }
+        else {
+            set_side(data[conflict], conflict);
+        }
+    }
+}
 
 left_btn = false;
 
@@ -88,16 +109,20 @@ function enable_column(i) {
 }
 
 function buttonClick(side, conflict) {
-    console.log("buttonClick", side, conflict);
+    if (data[conflict] == side) {
+        set_side(null, conflict);
+    }
+    else {
+        set_side(side, conflict);
+    }
+}
+function set_side(side, conflict) {
     for (el of document.getElementsByClassName("flag-"+conflict)) {
         el.style.backgroundColor = "";
         el.style.border = "";
         el.style.scale = "";
     }
-    if (data[conflict] == side) {
-        data[conflict] = null;
-    }
-    else {
+    if (side != null) {
         for (el of document.getElementsByClassName("flag-"+conflict)) {
             el.style.scale = "0.9";
         }
@@ -106,8 +131,8 @@ function buttonClick(side, conflict) {
             el.style.border = "4px solid gold"
             el.style.scale = "1.1";
         }
-        data[conflict] = side;
     }
+    data[conflict] = side;
 }
 
 function share() {
@@ -136,9 +161,9 @@ function clearv() {
     }
 }
 
-window.onbeforeunload = function ()
+window.onunload = function ()
 {
-    return confirm("Are you sure you want to reload?");
+    localStorage.setItem("data", JSON.stringify(data));
 };
 
 function takeScreen() {
