@@ -245,7 +245,7 @@ var conflictdata = {
                     "CZE-NSP",
                     "CZE-KSC"
                 ],
-                "id": "1948_Czechoslovak_coup_d'etat"
+                "id": "1948_Czechoslovak_coup_d_etat"
             },
             {
                 "name": "1948 Arab-Israeli War",
@@ -311,7 +311,7 @@ var conflictdata = {
                     "ENG-kingdom-old",
                     "ENG-army-of-god"
                 ],
-                "id": "First_Barons'_War"
+                "id": "First_Barons_War"
             },
             {
                 "name": "Second Barons' War",
@@ -319,7 +319,7 @@ var conflictdata = {
                     "ENG-kingdom-old",
                     "ENG-barons"
                 ],
-                "id": "Second_Barons'_War"
+                "id": "Second_Barons_War"
             },
             {
                 "name": "Despenser War",
