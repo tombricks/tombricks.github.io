@@ -3,22 +3,55 @@ html {
 }
 body {
     height: 100%;
-    color: whitesmoke;
-    text-shadow: 2px 2px 4px #000000;
-    font-family: 'Roboto Slab';
     height: 100%;
     padding: 0px;
     margin: 0px;
+    font-family: 'Arial', 'Segoe UI','Segoe UI Emoji','Segoe UI Symbol','Lato','Liberation Sans','Noto Sans','Helvetica Neue','Helvetica',sans-serif;
 }
-#left-panel {
-    width: 33%;
+#topbar {
+    width: 445px;
     float: left;
-    background-color: lightgray;
-    height: 100%;
+    height: 128px;
     padding-left: 10px;
     padding-right: 30px;
     overflow: auto;
+    background-color: #e0e0e0;
+    overflow: hidden;
+    height: 100%;
 }
+.focus-editor-basics {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+}
+.focus-editor-option {
+}
+button.focus-editor-basics {
+}
+button:hover.focus-editor-basics {
+}
+input:focus.focus-editor-basics {
+    outline: 0;
+}
+textarea:focus.focus-editor-basics {
+    outline: 0;
+}
+.focus-editor-prereq {
+    border: 1px solid #8F8F9D;
+    background: white;
+    display: inline;
+    position: static;
+    overflow-y: scroll;
+}
+td {
+    vertical-align: middle;
+    text-align: center;
+    width: 73px;
+}
+
 #focus-panel {
     margin-left: 33%;
     position:relative;
@@ -31,6 +64,8 @@ body {
     overflow: auto;
     padding: 0px;
     margin: 0px;
+    color: whitesmoke;
+    text-shadow: 2px 2px 4px #000000;
 }
 #focus-panel-focuses {
     position: relative;
@@ -85,23 +120,41 @@ body {
     border-style: solid;
     border-color: white;
 }
+#modal {
+    display: none;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 #focus-gfx-panel {
-    width: 600px;
-    height: 100%;
+    background-color: whitesmoke;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #8F8F9D;
+    width: 800px;
+    height: 80%;
+    overflow: hidden;
     backdrop-filter: blur(10px);
 }
 #focus-gfx-panel-gfx {
-    width: 600px;
     height: 100%;
-    backdrop-filter: blur(10px);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* fraction*/
-    overflow: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    overflow-y: scroll;
 }
 .focus-gfx {
     height: 125px;
     overflow: hidden;
     position: relative;
+    padding: 4px;
+    text-align: center;
 }
 .focus-gfx-icon {
     position: absolute;
@@ -114,9 +167,10 @@ body {
 }
 .monaco-container {
 	width: 100%;
-    min-height: 100px;
+    min-height: 128px;
 	margin: 0;
 	padding: 0;
+    text-align: left;
 }
 #focus_edit_collapse_container {
     background-color: #00000044;
@@ -124,4 +178,25 @@ body {
 }
 .textarea {
     width: 100%;
+}
+#loading {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    font-size: 5vw;
+    text-shadow: 2px 2px 16px black;
 }

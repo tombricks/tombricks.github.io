@@ -1,41 +1,349 @@
-latestFocusID = 0
-editing_focus_id = -1
+editing_focus_id = "-1"
 focuses = {}
 focusKeys = {}
+tree_data = {
+    "latestFocusID": -1,
+    "tag": "GER",
+}
 editing_focus = false;
 monaco_init = false;
-var focus_monaco_available;
-var focus_monaco_bypass;
-var focus_monaco_reward;
-var focus_monaco_allow;
-var focus_monaco_cancel;
-var focus_monaco_historical;
-var focus_monaco_tooltip;
-var focus_monaco_select;
+var focus_monaco = {
+    "available": null, "bypass": null, "reward": null, "allow": null, "cancel": null, "historical": null, "tooltip": null, "select": null
+};
+
+function focus_editor_clear_focuses () {
+    $(".line").remove();
+    $(".focus").remove();
+    tree_data["latestFocusID"] = 0;
+    focuses = {};
+    focusKeys = {};
+}
+
+function focus_editor_create_new_tree() {
+    focus_editor_clear_focuses();
+    focus_editor_create_new_focus();
+    focus_editor_select_focus("i1");
+}
+
+function focus_editor_create_new_focus() {
+    tree_data["latestFocusID"] += 1;
+    let new_focus = new Focus(tree_data["latestFocusID"]);
+    focuses[`i${tree_data["latestFocusID"]}`] = new_focus;
+    focusKeys[`i${tree_data["latestFocusID"]}`] = new_focus.id;
+    focusKeys[new_focus.id] = `i${tree_data["latestFocusID"]}`;
+
+    if (editing_focus_id in focuses) {
+        focuses[new_focus.internalID].visible_x = focuses[editing_focus_id].visible_x;
+        focuses[new_focus.internalID].relative_x = focuses[editing_focus_id].visible_x;
+        focuses[new_focus.internalID].visible_y = focuses[editing_focus_id].visible_y + 1;
+        focuses[new_focus.internalID].relative_y = focuses[editing_focus_id].visible_y + 1;
+        if (focuses[editing_focus_id].relative_position_id != -1) {
+            focus_editor_change_relative(new_focus.internalID, focuses[editing_focus_id].relative_position_id);
+        }
+    }
+
+    focus_editor_create_focus_element(new_focus.internalID);
+}
+
+function focus_editor_create_focus_element(id) {
+    $("#focus-panel-focuses").append(`<div onclick="focus_click(event, '${focuses[id].internalID}')" class="focus" id="focus-${focuses[id].internalID}" style="left: ${focuses[id].visible_x*96+13}px; top: ${focuses[id].visible_y*130}px">
+    <img class="center" style="position: absolute; top: 40px" src="assets/focus_unavailable_bg.png" />
+    <img class="focus-icon center focus-${focuses[id].internalID}-icon" style="position: absolute; top: -44px" src="assets/${focusesgfx[focuses[id].icon]}" />
+    <p class="center focus-${focuses[id].internalID}-name" style="position: absolute; top: 76px; font-size: 14px">${focuses[id].name}</p>
+    </div>`);
+}
+
+function focus_editor_select_focus(id) {
+    editing_focus_id = id;
+    let sFocus = focuses[id];
+    $("#focus_name").val(sFocus.name);
+    $("#focus_id").val(sFocus.id);
+    $("#focus_icon").attr('src', 'assets/'+focusesgfx[sFocus.icon]);
+    $("#focus_desc").val(sFocus.desc);
+    $("#focus_x").val(sFocus.relative_x);
+    $("#focus_y").val(sFocus.relative_y);
+    $("#focus_relative_position").html(`<option style="font-style: italic;" value="-1">None</option>`);
+    let genericList = focus_editor_generate_list([sFocus.internalID], sFocus.relative_position_id);
+    console.log(genericList);
+    $("#focus_relative_position").append(genericList);
+    focus_editor_generate_prereqs(id);
+    focus_editor_generate_mutuals();
+    focus_editor_update_all();
+    $("#focus_cost").val(sFocus.cost);
+    $("#focus_available_if_capitulated").prop('checked', sFocus.available_if_capitulated);
+    $("#focus_cancel_if_invalid").prop('checked', sFocus.cancel_if_invalid);
+    $("#focus_continue_if_invalid").prop('checked', sFocus.continue_if_invalid);
+    $("#focus_cancelable").prop('checked', sFocus.cancelable);
+    $("#focus_bypass_if_unavailable").prop('checked', sFocus.bypass_if_unavailable);
+    focus_monaco["available"].setValue(sFocus.blocks["available"]);
+    focus_monaco["bypass"].setValue(sFocus.blocks["bypass"]);
+    focus_monaco["reward"].setValue(sFocus.blocks["reward"]);
+    focus_monaco["allow"].setValue(sFocus.blocks["allow"]);
+    focus_monaco["cancel"].setValue(sFocus.blocks["cancel"]);
+    focus_monaco["historical"].setValue(sFocus.blocks["historical"]);
+    focus_monaco["tooltip"].setValue(sFocus.blocks["tooltip"]);
+    focus_monaco["select"].setValue(sFocus.blocks["select"]);
+
+    $(".focus").addClass("half-opacity");
+    $(`#focus-${id}`).removeClass("half-opacity");
+}
+
+function focus_editor_new_focus_button() {
+    focus_editor_create_new_focus();
+    focus_editor_select_focus("i"+tree_data["latestFocusID"]);
+}
+
+function focus_editor_change_name() {
+    if (focus_editor_generate_id_return(focuses[editing_focus_id].name) == focuses[editing_focus_id].id) {
+        focus_editor_generate_id();
+    }
+    focuses[editing_focus_id].name = $("#focus_name").val();
+    $(`.focus-${editing_focus_id}-name`).html(focuses[editing_focus_id].name);
+}
+
+function focus_editor_change_id() {
+    focuses[editing_focus_id].id = $("#focus_id").val();
+    delete focusKeys[focusKeys[editing_focus_id]];
+    focusKeys[editing_focus_id] = $("#focus_id").val();
+    focusKeys[$("#focus_id").val()] = editing_focus_id;
+}
+
+function focus_editor_change_relative_button() {
+    focus_editor_change_relative(editing_focus_id, $("#focus_relative_position").val());
+}
+
+function focus_editor_change_relative(id, newRel) {
+    if (newRel != -1) {
+        focuses[id].relative_x = focuses[id].visible_x - focuses[newRel].visible_x;
+        focuses[id].relative_y = focuses[id].visible_y - focuses[newRel].visible_y;
+        if (focuses[id].relative_position_id != -1) {
+            focuses[focuses[id].relative_position_id].relative_position_successors.splice(focuses[focuses[id].relative_position_id].relative_position_successors.indexOf(id), 1);
+        }
+        focuses[id].relative_position_id = newRel;
+        focuses[focuses[id].relative_position_id].relative_position_successors.push(id);
+        
+        if (editing_focus_id == id) {
+            $("#focus_x").val(focuses[id].relative_x);
+            $("#focus_y").val(focuses[id].relative_y);
+        }
+    }
+    else {
+        focuses[id].relative_x = focuses[id].visible_x;
+        focuses[id].relative_y = focuses[id].visible_y;
+        if (editing_focus_id == id) {
+            $("#focus_x").val(focuses[id].visible_x);
+            $("#focus_y").val(focuses[id].visible_y);
+        }
+        focuses[focuses[id].relative_position_id].relative_position_successors.splice(focuses[focuses[id].relative_position_id].relative_position_successors.indexOf(id), 1);
+        focuses[id].relative_position_id = -1;
+    }
+}
+
+function focus_editor_change_pos() {
+    let newRelX = parseInt($("#focus_x").val());
+    let changeX = newRelX - focuses[editing_focus_id].relative_x;
+    
+    let newRelY = parseInt($("#focus_y").val());
+    let changeY = newRelY - focuses[editing_focus_id].relative_y;
+    focus_editor_change_pos_n(editing_focus_id, changeX, changeY);
+}
+
+function focus_editor_change_pos_n(id, changeX, changeY) {
+    focuses[id].relative_x += changeX;
+    focuses[id].visible_x += changeX;
+    
+    focuses[id].relative_y += changeY;
+    focuses[id].visible_y += changeY;
+
+    if (id == editing_focus_id) {
+        $("#focus_x").val(focuses[id].relative_x);
+        $("#focus_y").val(focuses[id].relative_y);
+    }
+    
+    focus_editor_update_pos(id);
+    focus_editor_change_pos_recursive(id, changeX, changeY);
+}
+
+function focus_editor_change_pos_recursive(id, changeX, changeY) {
+    for (let newId of focuses[id].relative_position_successors) {
+        focuses[newId].visible_x += changeX;
+        focuses[newId].visible_y += changeY;
+        focus_editor_update_pos(newId);
+        focus_editor_change_pos_recursive(newId, changeX, changeY);
+    }
+}
+
+function focus_editor_update_all() {
+    for (let focus in focuses) {
+        focus_editor_update_pos(focus);
+        draw_focus_prerequisites(focus);
+    }
+}
+
+function focus_editor_update_pos(id) {
+    $(`#focus-${id}`).css('left', `${13+focuses[id].visible_x*96}px`);
+    $(`#focus-${id}`).css('top', `${focuses[id].visible_y*130}px`);
+    draw_focus_prerequisites(id);
+}
+
+function focus_editor_change_prereq(id, prereqId, subId) {
+    let val = $(`#focus_prereq-${prereqId}-${subId}`).val();
+    for (let newId of focuses[id].prerequisites[prereqId]) {
+        if (focuses[newId].reverse_prerequisites.includes(id)) {
+            focuses[newId].reverse_prerequisites.splice(focuses[newId].reverse_prerequisites.indexOf(id), 1);
+        }
+        if (focuses[newId].reverse_or_prerequisites.includes(id)) {
+            focuses[newId].reverse_or_prerequisites.splice(focuses[newId].reverse_or_prerequisites.indexOf(id), 1);
+        }
+    }
+    if (subId == focuses[id].prerequisites[prereqId].length) {
+        if (val == -1) {
+
+        }
+        else { 
+            focuses[id].prerequisites[prereqId].push(val);
+        }
+    }
+    else {
+        if (val == -1) {
+            focuses[id].prerequisites[prereqId].splice(subId, 1);
+        }
+        else {
+            focuses[id].prerequisites[prereqId][subId] = val;
+        }
+    }
+    if (focuses[id].prerequisites[prereqId].length == 0) {
+        focuses[id].prerequisites.splice(prereqId, 1);
+    }
+    else if (focuses[id].prerequisites[prereqId].length == 1) {
+        for (let newId of focuses[id].prerequisites[prereqId]) {
+            focuses[newId].reverse_prerequisites.push(id);
+        }
+    }
+    else if (focuses[id].prerequisites[prereqId].length == 2) {
+        for (let newId of focuses[id].prerequisites[prereqId]) {
+            focuses[newId].reverse_or_prerequisites.push(id);
+        }
+    }
+    focus_editor_generate_prereqs(id);
+}
+
+function focus_editor_create_prereq(id) {
+    focuses[id].prerequisites.push([$("#focus_prereq-new").val()])
+    focus_editor_generate_prereqs(id);
+}
+
+function focus_editor_generate_prereqs(id) {
+    $("#focus_prerequisites").html("");
+    let i1 = 0;
+    for (let prereq of focuses[id].prerequisites) {
+        let i2 = 0;
+        let text = "<div>";
+        for (let newId of prereq) {
+            let nGenericList = focus_editor_generate_list([id], newId);
+            text += `<select id="focus_prereq-${i1}-${i2}" onchange="focus_editor_change_prereq('${id}', ${i1}, ${i2})"><option style="font-style: italic;" value="-1">None</option>${nGenericList}</select> or `;
+            i2 += 1;
+        }
+        let nGenericList = focus_editor_generate_list([id], -1);
+        text += `<select id="focus_prereq-${i1}-${i2}" onchange="focus_editor_change_prereq('${id}', ${i1}, ${i2})"><option style="font-style: italic;" value="-1" selected>Select Focus</option>${nGenericList}</select></div><hr>`;
+        $("#focus_prerequisites").append(text);
+        i1 += 1;
+    }
+    $("#focus_prerequisites").append(`<select id="focus_prereq-new" onchange="focus_editor_create_prereq('${id}')"><option selected style="font-style: italic;" value="-1">Select Focus</option>${focus_editor_generate_list([id])}</select>`);
+
+    draw_focus_prerequisites(id);
+}
+
+function focus_editor_generate_mutuals() {
+    $("#focus_mutually_exclusives").html("");
+    let i = 0;
+    for (let mutual of focuses[editing_focus_id].mutually_exclusives) {
+        genericList = focus_editor_generate_list([editing_focus_id], mutual);
+        $("#focus_mutually_exclusives").append(`<select id="focus_mutual-${i}" onchange="focus_editor_change_mutual(${i})"><option style="font-style: italic;" value="-1">None</option>${genericList}</select><br>`);
+        i += 1;
+    }
+    genericList = focus_editor_generate_list([editing_focus_id]);
+    $("#focus_mutually_exclusives").append(`<select id="focus_mutual-new" onchange="focus_editor_create_mutual()"><option style="font-style: italic;" value="-1" selected>Select Focus</option>${genericList}</select><br>`);
+
+    draw_focus_prerequisites(editing_focus_id);
+}
+
+function focus_editor_create_mutual() {
+    focuses[editing_focus_id].mutually_exclusives.push($("#focus_mutual-new").val());
+    focuses[$("#focus_mutual-new").val()].mutually_exclusives.push(editing_focus_id);
+    focus_editor_generate_mutuals();
+}
+
+function focus_editor_change_mutual(i) {
+    let newMut = $(`#focus_mutual-${i}`).val();
+    let oldMut = focuses[editing_focus_id].mutually_exclusives[i];
+    if (newMut == -1) {
+        focuses[oldMut].mutually_exclusives.splice(focuses[oldMut].mutually_exclusives.indexOf(editing_focus_id), 1);
+        focuses[editing_focus_id].mutually_exclusives.splice(focuses[editing_focus_id].mutually_exclusives.indexOf(oldMut), 1);
+    }
+    else {
+        focuses[oldMut].mutually_exclusives.splice(focuses[oldMut].mutually_exclusives.indexOf(editing_focus_id), 1);
+        focuses[editing_focus_id].mutually_exclusives[i] = newMut;
+        focuses[newMut].mutually_exclusives.push(editing_focus_id);
+    }
+    focus_editor_generate_mutuals();
+}
+
+function focus_editor_generate_list(ids, match=-3) {
+    let genericList = "";
+    for (let newId in focuses) {
+        if (!ids.includes(newId)) {
+            if (match == newId) {
+                genericList += `<option selected value="${newId}">${focuses[newId].name}</option>`;
+            }
+            else {
+                genericList += `<option value="${newId}">${focuses[newId].name}</option>`;
+            }
+        }
+    }
+    return genericList;
+}
+
+function focus_editor_icon_click(gfx) {
+    focuses[editing_focus_id].icon = gfx;
+    $("#focus_icon").attr('src', 'assets/'+focusesgfx[gfx]);
+    $(`.focus-${editing_focus_id}-icon`).attr('src', 'assets/'+focusesgfx[gfx]);
+    $("#modal").hide();
+}
+
+function focus_editor_open_gallery() {
+    $("#modal").show();
+}
+
+window.onclick = function(event) {
+    if (event.target == document.getElementById("modal")) {
+        document.getElementById("modal").style.display = "none";
+    }
+} 
 
 function Focus(internalID) {
-    this.internalID = internalID;
+    this.internalID = `i${internalID}`;
     this.id = `new_focus_${internalID}`;
     this.name = "New Focus";
     this.icon = "GFX_goal_unknown";
-    this.x = 0;
-    this.y = 0;
+    this.visible_x = 0;
+    this.visible_y = 0;
+    this.relative_x = 0;
+    this.relative_y = 0;
     this.prerequisites = [];
     this.reverse_prerequisites = [];
     this.reverse_or_prerequisites = [];
     this.mutually_exclusives = [];
-    this.block_available = "";
-    this.block_bypass = "";
-    this.block_reward = "";
-    this.block_allow = "";
-    this.block_cancel = "";
-    this.block_historical = "";
-    this.block_tooltip = "";
-    this.block_select = "";
+    this.blocks = {}
+    for (let thing in focus_monaco) {
+        this.blocks[thing] = "";
+    }
     this.desc = "";
     this.cost = 1;
     // need to add
     this.relative_position_id = -1;
+    this.relative_position_successors = [];
+    this.relative_position_predecessors = [];
     this.dynamic = false;
     this.available_if_capitulated = false;
     this.cancel_if_invald = false;
@@ -76,13 +384,11 @@ function create_vertical_line(divname, classes, originx, originy, length) {
     `);
 }
 function draw_prerequisite_line(focus1, focus2, classes) {
-    x1 = focuses[focus1].x;
-    y1 = focuses[focus1].y;
-    x2 = focuses[focus2].x;
-    y2 = focuses[focus2].y;
-    console.log(`(${x1}, ${y1}), (${x2}, ${y2})`);
+    let x1 = focuses[focus1].visible_x;
+    let y1 = focuses[focus1].visible_y;
+    let x2 = focuses[focus2].visible_x;
+    let y2 = focuses[focus2].visible_y;
     if (x1 == x2) {
-        console.log("1");
         create_vertical_line(
             `prerequisite-straight-${focus1}-${focus2}`,
             `line-focus-${focus1} line-focus-${focus2} prerequisite prerequisite-${focus1}-${focus2} ${classes}`,
@@ -91,8 +397,7 @@ function draw_prerequisite_line(focus1, focus2, classes) {
             y2-y1
         );
     }
-    else if (focuses[focus1].x > focuses[focus2].x) {
-        console.log("2");
+    else if (focuses[focus1].visible_x > focuses[focus2].visible_x) {
         create_vertical_line(
             `prerequisite-left-${focus1}-${focus2}-1`,
             `line-focus-${focus1} line-focus-${focus2} prerequisite prerequisite-${focus1}-${focus2} ${classes}`,
@@ -116,7 +421,6 @@ function draw_prerequisite_line(focus1, focus2, classes) {
         );
     }
     else {
-        console.log("3");
         create_vertical_line(
             `prerequisite-right-${focus1}-${focus2}-1`,
             `line-focus-${focus1} line-focus-${focus2} prerequisite prerequisite-${focus1}-${focus2} ${classes}`,
@@ -142,91 +446,42 @@ function draw_prerequisite_line(focus1, focus2, classes) {
 }
 function draw_focus_prerequisites(focus) {
     $(`.line-focus-${focus}`).remove();
-    for (prereq of focuses[focus].prerequisites) {
+    for (let prereq of focuses[focus].prerequisites) {
         if (prereq.length == 1) {
             draw_prerequisite_line(prereq[0], focus, "");
         }
         else {
-            for (prereq2 of prereq) {
+            for (let prereq2 of prereq) {
                 draw_prerequisite_line(prereq2, focus, "prerequisite-or");
             }
         }
     }
-    for (lead of focuses[focus].reverse_prerequisites) {
+    for (let lead of focuses[focus].reverse_prerequisites) {
         draw_prerequisite_line(focus, lead, "");
     }
-    for (lead of focuses[focus].reverse_or_prerequisites) {
+    for (let lead of focuses[focus].reverse_or_prerequisites) {
         draw_prerequisite_line(focus, lead, "prerequisite-or");
     }
 
-    for(mutual of focuses[focus].mutually_exclusives) {
-        console.log(focuses[focus].mutually_exclusives);
-        console.log(mutual);
-        if (focuses[mutual].x > focuses[focus].x) {
-            create_horizontal_line(`mutually-exclusive-${focus}-${mutual}`, `line-focus-${focus} line-focus-${mutual} prerequisite mutually-exclusive-${focus}-${mutual} mutually-exclusive`, focuses[focus].x, focuses[focus].y, focuses[mutual].x-focuses[focus].x);
+    for(let mutual of focuses[focus].mutually_exclusives) {
+        if (focuses[mutual].visible_x > focuses[focus].visible_x) {
+            create_horizontal_line(`mutually-exclusive-${focus}-${mutual}`, `line-focus-${focus} line-focus-${mutual} prerequisite mutually-exclusive-${focus}-${mutual} mutually-exclusive`, focuses[focus].visible_x, focuses[focus].visible_y, focuses[mutual].visible_x-focuses[focus].visible_x);
         }
         else {
-            create_horizontal_line(`mutually-exclusive-${focus}-${mutual}`, `line-focus-${focus} line-focus-${mutual} prerequisite mutually-exclusive-${focus}-${mutual} mutually-exclusive`, focuses[mutual].x, focuses[focus].y, focuses[focus].x-focuses[mutual].x);
+            create_horizontal_line(`mutually-exclusive-${focus}-${mutual}`, `line-focus-${focus} line-focus-${mutual} prerequisite mutually-exclusive-${focus}-${mutual} mutually-exclusive`, focuses[mutual].visible_x, focuses[focus].visible_y, focuses[focus].visible_x-focuses[mutual].visible_x);
         }
     }
 }
-function submit_focus() {
-    latestFocusID += 1;
-    focus = new Focus(latestFocusID);
-    focus.x = parseInt($("#focus_x").val());
-    focus.y = parseInt($("#focus_y").val());
-    focus.cost = parseInt($("#focus_cost").val());
-    focus.id = $("#focus_id").val();
-    focus.name = $("#focus_name").val();
-    focus.desc = $("#focus_desc").val();
-    focus.icon = $("#focus_icon").val();
-    focus.block_available = focus_monaco_available.getValue();
-    focus.block_bypass = focus_monaco_bypass.getValue();
-    focus.block_reward = focus_monaco_reward.getValue();
-    focus.block_allow = focus_monaco_allow.getValue();
-    focus.block_cancel = focus_monaco_cancel.getValue();
-    focus.block_historical = focus_monaco_historical.getValue();
-    focus.block_tooltip = focus_monaco_tooltip.getValue();
-    focus.block_select = focus_monaco_select.getValue();
-    focus.prerequisites = new_prerequisites;
-    focus.mutually_exclusives = new_mutually_exclusives;
-    for (int in new_prerequisites) {
-        for (int2 in new_prerequisites[int]) {
-            if (new_prerequisites[int].length == 1) {
-                focuses[ new_prerequisites[int][int2] ].reverse_prerequisites.push(latestFocusID);
-            }
-            else {
-                focuses[ new_prerequisites[int][int2] ].reverse_or_prerequisites.push(latestFocusID);
-            }
-        }
-    }
-    for (int in new_mutually_exclusives) {
-        console.log(`focuses[new_mutually_exclusives[${int}]]`);
-        console.log(`focuses[${new_mutually_exclusives[int]}]`);
-        focuses[new_mutually_exclusives[int]].mutually_exclusives.push(latestFocusID);
-    }
 
-    
-    $("#focus-panel-focuses").append(`<div onclick="focus_click(${focus.internalID})" class="focus" id="focus-${focus.internalID}" style="left: ${focus.x*96+13}px; top: ${focus.y*130}px">
-    <img class="center" style="position: absolute; top: 40px" src="assets/focus_unavailable_bg.png" />
-    <p id="focus-${focus.internalID}-name" class="center" style="position: absolute; top: 76px; font-size: 14px">${focus.name}</p>
-    <img id="focus-${focus.internalID}-icon" class="focus-icon center" style="position: absolute; top: -44px" src="assets/focuses/${focusesgfx[focus.icon]}" />
-    </div>`);
-    focuses[focus.internalID] = focus;
-    focusKeys[focus.id] = focus.internalID;
-    focusKeys[focus.internalID] = focus.id;
-    draw_focus_prerequisites(latestFocusID);
-    focus_edit_select_focus(focus.internalID);
-}
 function delete_focus(focus) {
-    for (focus2 in focuses) {
+    for (let focus2 in focuses) {
         if (focuses[focus2].reverse_prerequisites.includes(focus)) {
             focuses[focus2].reverse_prerequisites.pop(focus);
         }
         if (focuses[focus2].reverse_or_prerequisites.includes(focus)) {
             focuses[focus2].reverse_or_prerequisites.pop(focus);
         }
-        for (int in focuses[focus2].prerequisites) {
+        for (let int in focuses[focus2].prerequisites) {
             while (focuses[focus2].prerequisites[int].includes(focus)) {
                 focus_edit_del_prereq_focus(int, focuses[focus2].prerequisites[int].indexOf(focus), focus2);
             }
@@ -236,393 +491,66 @@ function delete_focus(focus) {
     $(`.line-focus-${focus}`).remove();
     delete focuses[focus];
 }
-function focus_click(id) {
-    if (editing_focus_id == id) {
-        focus_edit_new_focus();
+function focus_click(e, id) {
+    if (e.shiftKey) {
     }
     else {
-        focus_edit_select_focus(id);
-    }
-}
-function focus_edit_new_focus() {
-    editing_focus_id = -1;
-    editing_focus = false;
-    $("#focus_id").val("TAG_new_focus");
-    $("#focus_name").val("New Focus");
-    $("#focus_desc").val("");
-    $("#focus_icon").val("GFX_goal_unknown");
-    $("#focus_cost").val(0);
-    if (monaco_init) {
-        focus_monaco_available.setValue("");
-        focus_monaco_bypass.setValue("");
-        focus_monaco_reward.setValue("");
-        focus_monaco_allow.setValue("");
-        focus_monaco_cancel.setValue("");
-        focus_monaco_historical.setValue("");
-        focus_monaco_tooltip.setValue("");
-        focus_monaco_select.setValue("");
-    }
-    new_prerequisites = [];
-    new_mutually_exclusives = [];
-    do_prerequisites();
-    do_mutuals();
-    // $("#focus_x").val(0);
-    // $("#focus_y").val(0);
-    $("#submit_focus").show();
-    $(".focus").removeClass("half-opacity");
-}
-function focus_edit_select_focus(id) {
-    editing_focus = true;
-    $('#focus_prereq_all').show();
-    editing_focus_id = id;
-    $(".focus").addClass("half-opacity");
-    $("#focus-"+id.toString()).removeClass("half-opacity");
-    $("#focus_id").val(focuses[editing_focus_id].id);
-    $("#focus_name").val(focuses[editing_focus_id].name);
-    $("#focus_desc").val(focuses[editing_focus_id].desc);
-    $("#focus_icon").val(focuses[editing_focus_id].icon);
-    $("#focus_x").val(parseInt(focuses[editing_focus_id].x));
-    $("#focus_y").val(parseInt(focuses[editing_focus_id].y));
-    $("#focus_cost").val(parseInt(focuses[editing_focus_id].cost));
-    focus_monaco_available.setValue(focuses[editing_focus_id].block_available)
-    focus_monaco_bypass.setValue(focuses[editing_focus_id].block_bypass)
-    focus_monaco_reward.setValue(focuses[editing_focus_id].block_reward)
-    focus_monaco_allow.setValue(focuses[editing_focus_id].block_allow)
-    focus_monaco_cancel.setValue(focuses[editing_focus_id].block_cancel)
-    focus_monaco_historical.setValue(focuses[editing_focus_id].block_historical)
-    focus_monaco_tooltip.setValue(focuses[editing_focus_id].block_tooltip)
-    focus_monaco_select.setValue(focuses[editing_focus_id].block_select)
-    $("#submit_focus").hide();
-    do_prerequisites();
-    do_mutuals();
-}
-function do_prerequisites() {
-    $(".prereq").remove();
-    if (editing_focus) {
-        temp_list = focuses[editing_focus_id].prerequisites;
-    }
-    else {
-        temp_list = new_prerequisites;
-    }
-    for (int in temp_list) {
-        $(`#prereq-container`).append(`
-        <div id="prereq-${int}" class="prereq prereq-${int}">
-            <div id="prereq-${int}-focuses" style="display:inline;"></div>
-            <button onclick="focus_edit_add_prereq_focus(${int})">+</button>
-            <button onclick="focus_edit_del_prereq(${int})" style="float:right" >-</button>
-        </div>
-        `);
-        //int2 = focuses[editing_focus_id].prerequisites[int].length-1;
-        for (int2 in temp_list[int]) {
-            options = "";
-            i = 0;
-            first = -1;
-            console.log("log 3")
-            for (focus in focuses) {
-                if (focus != editing_focus_id) {
-                    if (focus == temp_list[int][int2]) { //<img class="small-focus-icon" src="assets/focuses/${focusesgfx[focuses[editing_focus_id].icon]}"></img>
-                        first = focus;
-                        options += `<option selected id="prereq-${int}-${int2}-${focus}" value=${focus}>${focuses[focus].name}</option>`;
-                    }
-                    else {
-                        options += `<option id="prereq-${int}-${int2}-${focus}" value=${focus}>${focuses[focus].name}</option>`;
-                    }
-                    i += 1;
-                }
-            }
-            $(`#prereq-${int}-focuses`).append(`
-                <select onchange="focus_edit_change_prereq_focus(${int}, ${int2})" id="prereq-${int}-${int2}" class="prereq-${int}-${int2} prereq-${int}">#
-                    ${options}
-                </select>
-                <button id="prereq-${int}-${int2}-del" onclick="focus_edit_del_prereq_focus(${int}, ${int2})" class="prereq-${int}-${int2} prereq-${int}">-</button>
-            `);
+        if (editing_focus_id == id) {
+        }
+        else {
+            focus_editor_select_focus(id);
         }
     }
 }
-function do_mutuals() {
-    $(".mutual").remove();
-    if (editing_focus) {
-        temp_list = focuses[editing_focus_id].mutually_exclusives;
-    }
-    else {
-        temp_list = new_mutually_exclusives;
-    }
-    for (int in temp_list) {
-        options = "";
-        i = 0;
-        first = -1;
-        console.log("log 3")
-        for (focus in focuses) {
-            if (focus != editing_focus_id) {
-                if (focus == temp_list[int]) { //<img class="small-focus-icon" src="assets/focuses/${focusesgfx[focuses[editing_focus_id].icon]}"></img>
-                    first = focus;
-                    options += `<option selected value=${focus} id="mutual-${int}-${focus}">${focuses[focus].name}</option>`;
-                }
-                else {
-                    options += `<option value=${focus} id="mutual-${int}-${focus}">${focuses[focus].name}</option>`;
-                }
-                i += 1;
-            }
-        }
-        $("#focus_mutuals").append(`
-        <select onchange="focus_edit_change_mutual(${int})" id="mutual-${int}" class="mutual-${int} mutual">#
-            ${options}
-        </select>
-        <button id="mutual-${int}-del" onclick="focus_edit_del_mutual(${int})" class="mutual-${int} mutual">-</button>
-        `);
-    }
+function focus_editor_generate_id() {
+    $("#focus_id").val(focus_editor_generate_id_return($("#focus_name").val()));
+    focus_editor_change_id();
 }
-function focus_edit_add_mutual() {
-    i = 0;
-    first = -1;
-    for (focus in focuses) {
-        if (focus != editing_focus_id) {
-            if (i == 0) {
-                first = focus;
-            }
-            i += 1;
-        }
-    }
-    if (editing_focus) {
-        focuses[editing_focus_id].mutually_exclusives.push(parseInt(first));
-        focuses[first].mutually_exclusives.push(editing_focus_id);
-        draw_focus_prerequisites(editing_focus_id);
-    }
-    else {
-        new_mutually_exclusives.push(parseInt(first));
-    }
-    do_mutuals();
+function focus_editor_generate_id_return(id) {
+    return tree_data["tag"]+"_"+(id.split(" ").join("_").toLowerCase());
 }
-function focus_edit_change_mutual(int) {
-    if(editing_focus) {
-        old_mutual = focuses[editing_focus_id].mutually_exclusives[int];
-        focuses[old_mutual].mutually_exclusives.splice(focuses[old_mutual].mutually_exclusives.indexOf(editing_focus_id, 1));
-        focuses[parseInt($(`#mutual-${int}`).val())].mutually_exclusives.push(editing_focus_id);
-        focuses[editing_focus_id].mutually_exclusives[int] = parseInt($(`#mutual-${int}`).val());
-        draw_focus_prerequisites(editing_focus_id);
-    }
-    else {
-        old_mutual = new_mutually_exclusives[int];
-        new_mutually_exclusives[int] = parseInt($(`#mutual-${int}`).val());
-    }
-    do_mutuals();
-}
-function focus_edit_del_mutual(int) {
-    if(editing_focus) {
-        old_mutual = focuses[editing_focus_id].mutually_exclusives[int];
-        focuses[old_mutual].mutually_exclusives.splice(focuses[old_mutual].mutually_exclusives.indexOf(editing_focus_id, 1));
-        focuses[editing_focus_id].mutually_exclusives.splice(focuses[editing_focus_id].mutually_exclusives.indexOf(old_mutual), 1);
-        draw_focus_prerequisites(editing_focus_id);
-    }
-    else {
-        old_mutual = new_mutually_exclusives[int];
-        new_mutually_exclusives.splice(new_mutually_exclusives.indexOf(old_mutual), 1);
-    }
-    do_mutuals();
-}
-function focus_edit_generate_id() {
-    $("#focus_id").val("TAG_"+$("#focus_name").val().split(" ").join("_").toLowerCase());
-}
-function focus_edit_change_id() {
-    if (editing_focus) {
-        focuses[editing_focus_id].id = $("#focus_id").val();
-        delete focusKeys[focusKeys[editing_focus_id]];
-        focuses[editing_focus_id] = $("#focus_id").val();
-    }
-}
-function focus_edit_change_name() {
-    if (editing_focus) {
-        focuses[editing_focus_id].name = $("#focus_name").val();
-        $(`#focus-${editing_focus_id}-name`).html(focuses[editing_focus_id].name);
-    }
-}
-function focus_edit_change_desc() {
-    if (editing_focus) {
-        focuses[editing_focus_id].desc = $("#focus_desc").val();
-    }
-}
-function focus_edit_change_cost() {
-    if (editing_focus) {
-        focuses[editing_focus_id].cost = parseInt($("#focus_cost").val());
-    }
-}
-function focus_edit_change_icon() {
-    if (editing_focus) {
-        focuses[editing_focus_id].icon = $("#focus_icon").val();
-        $(`#focus-${editing_focus_id}-icon`).attr("src", `assets/focuses/${focusesgfx[focuses[editing_focus_id].icon]}` );
-    }
-}
-function focus_edit_change_x() {
-    if (editing_focus) {
-        focuses[editing_focus_id].x = parseInt($("#focus_x").val());
-        console.log(`Moving x to ${parseInt($("#focus_x").val())}`);
-        $(`#focus-${editing_focus_id}`).css("left", `${focuses[editing_focus_id].x*96+13}px` );
-        draw_focus_prerequisites(editing_focus_id);
-    }
-}
-function focus_edit_change_y() {
-    if (editing_focus) {
-        focuses[editing_focus_id].y = parseInt($("#focus_y").val());
-        console.log(`Moving y to ${parseInt($("#focus_y").val())}`);
-        $(`#focus-${editing_focus_id}`).css("top", `${focuses[editing_focus_id].y*130}px` );
-        draw_focus_prerequisites(editing_focus_id);
-    }
-}
-function focus_gfx_click(gfx) {
-    console.log(gfx);
-    $("#focus_icon").val(gfx);
-    focus_edit_change_icon();
-}
-function focus_gfx_button() {
-    if ($("#focus-gfx-panel").is(":hidden")) {
-        $("#focus-gfx-panel").show();
-        $("#focus-panel-focuses").css("left", "600px");
-        $(".focus-gfx-button").html("Hide Focus GFX");
-    }
-    else {
-        $("#focus-gfx-panel").hide();
-        $("#focus-panel-focuses").css("left", "0px");
-        $(".focus-gfx-button").html("View Focus GFX");
-    }
-}
-function export_focuses() {
+function focus_editor_save_focuses() {
     localStorage.setItem("focuses", JSON.stringify(focuses));
     localStorage.setItem("focusKeys", JSON.stringify(focusKeys));
-    localStorage.setItem("latestFocusID", latestFocusID);
+    localStorage.setItem("tree_data", JSON.stringify(tree_data));
 }
-function load_focuses(t_focuses, t_keys, t_id) {
+function focus_editor_load_focuses(t_focuses, t_keys, t_id) {
+    focus_editor_clear_focuses();
     focuses = JSON.parse(localStorage.getItem("focuses"));
     focusKeys = JSON.parse(localStorage.getItem("focusKeys"));
-    latestFocusID = parseInt(localStorage.getItem("latestFocusID"));
+    tree_data = JSON.parse(localStorage.getItem("tree_data"));
 
-    for (focus in focuses) {
-        draw_focus_prerequisites(focus);
-        $("#focus-panel-focuses").append(`<div onclick="focus_click(${focuses[focus].internalID})" class="focus" id="focus-${focuses[focus].internalID}" style="left: ${focuses[focus].x*96+13}px; top: ${focuses[focus].y*130}px">
-        <img class="center" style="position: absolute; top: 40px" src="assets/focus_unavailable_bg.png" />
-        <p id="focus-${focuses[focus].internalID}-name" class="center" style="position: absolute; top: 76px; font-size: 14px">${focuses[focus].name}</p>
-        <img id="focus-${focuses[focus].internalID}-icon" class="focus-icon center" style="position: absolute; top: -44px" src="assets/focuses/${focusesgfx[focuses[focus].icon]}" />
-        </div>`);
+    for (let focus in focuses) {
+        focus_editor_create_focus_element(focus);
     }
+
+    focus_editor_update_all();
+    focus_editor_select_focus(Object.keys(focuses)[Object.keys(focuses).length - 1]);
 }
-function focus_edit_add_prereq_focus(int) {
-    i = 0;
-    first = -1;
-    for (focus in focuses) {
-        if (focus != editing_focus_id) {
-            if (i == 0) {
-                first = focus;
-            }
-            i += 1;
-        }
-    }
-    if (editing_focus) {
-        focuses[editing_focus_id].prerequisites[int].push(parseInt(first));
-        focuses[first].reverse_prerequisites.push(parseInt(editing_focus_id));
-        draw_focus_prerequisites(editing_focus_id);
-    }
-    else {
-        new_prerequisites[int].push(parseInt(first));
-    }
-    do_prerequisites();
-}
-function focus_edit_add_prereq() {
-    if (editing_focus) {
-        int = focuses[editing_focus_id].prerequisites.length;
-        focuses[editing_focus_id].prerequisites.push([]);
-        do_prerequisites();
-        focus_edit_add_prereq_focus(int);
-    }
-    else {
-        int = new_prerequisites.length;
-        new_prerequisites.push([]);
-        do_prerequisites();
-        focus_edit_add_prereq_focus(int);
-    }
-}
-function focus_edit_change_prereq_focus(int, int2) {
-    if(editing_focus) {
-        old_prereq = focuses[editing_focus_id].prerequisites[int][int2];
-        if (focuses[editing_focus_id].prerequisites[int].length == 1) {
-            focuses[old_prereq].reverse_prerequisites.splice(focuses[old_prereq].reverse_prerequisites.indexOf(editing_focus_id, 1));
-            focuses[parseInt($(`#prereq-${int}-${int2}`).val())].reverse_prerequisites.push(parseInt(editing_focus_id));
+
+function focus_editor_search_gallery() {
+    let check = $("#focus-gfx-search").val().toLowerCase();
+    $(".focus-gfx").each(function() {
+        if (!$(this).attr('id').toLowerCase().includes(check)) {
+            $(this).hide();
         }
         else {
-            focuses[old_prereq].reverse_or_prerequisites.splice(focuses[old_prereq].reverse_prerequisites.indexOf(editing_focus_id, 1));
+            $(this).show();
         }
-        focuses[editing_focus_id].prerequisites[int][int2] = parseInt($(`#prereq-${int}-${int2}`).val());
-        draw_focus_prerequisites(editing_focus_id);
-    }
-    else {
-        old_prereq = new_prerequisites[int][int2];
-        new_prerequisites[int][int2] = parseInt($(`#prereq-${int}-${int2}`).val());
-    }
+    })
 }
-function focus_edit_del_prereq_focus(int, int2, revfocus=editing_focus_id) {
-    if (editing_focus) {
-        old_prereq = focuses[revfocus].prerequisites[int][int2];
-        if (focuses[revfocus].prerequisites[int].length == 1) {
-            focuses[old_prereq].reverse_prerequisites.splice(focuses[old_prereq].reverse_prerequisites.indexOf(revfocus, 1));
-        }
-        else {
-            focuses[old_prereq].reverse_or_prerequisites.splice(focuses[old_prereq].reverse_or_prerequisites.indexOf(revfocus, 1));
-        }
-        focuses[revfocus].prerequisites[int].splice(int2, 1);
-        if (focuses[revfocus].prerequisites[int].length == 0) {
-            focus_edit_del_prereq(int, revfocus);
-        }
-        if (revfocus == editing_focus_id) {
-            do_prerequisites();
-        }
-        draw_focus_prerequisites(revfocus);
-    }
-    else {
-        old_prereq = new_prerequisites[int][int2];
-        new_prerequisites[int].splice(int2, 1);
-        if (new_prerequisites[int].length == 0) {
-            focus_edit_del_prereq(int, -1);
-        }
-        if (revfocus == -1) {
-            do_prerequisites();
-        }
-    }
-}
-function focus_edit_del_prereq(int, revfocus=editing_focus_id) {
-    if (editing_focus) {
-        for (focus of focuses[revfocus].prerequisites[int]) {
-            if (focuses[revfocus].prerequisites[int].length == 1) {
-                focuses[focus].reverse_prerequisites.splice(focuses[focus].reverse_prerequisites.indexOf(revfocus, 1));
-            }
-            else {
-                focuses[focus].reverse_or_prerequisites.splice(focuses[focus].reverse_or_prerequisites.indexOf(revfocus, 1));
-            }
-        }
-        focuses[revfocus].prerequisites.splice(int, 1);
-        if (revfocus == editing_focus_id) {
-            $(`.prereq-${int}`).remove();
-            do_prerequisites();
-        }
-        draw_focus_prerequisites(revfocus);
-    }
-    else {
-        new_prerequisites.splice(int, 1);
-        if (revfocus == -1) {
-            $(`.prereq-${int}`).remove();
-            do_prerequisites();
-        }
-    }
-}
+
 $(document).ready(function() {
-    $("#focus-gfx-panel").hide();
-    for (gfx in focusesgfx) {
+    $("#modal").hide();
+    for (let gfx in focusesgfx) {
         $("#focus-gfx-panel-gfx").append(`
             <div class="focus-gfx" id="focus-gfx-${gfx}">
-            <img onclick="focus_gfx_click('${gfx}')" class="focus-gfx-icon center" src="assets/focuses/${focusesgfx[gfx]}"></img>
+            <img onclick="focus_editor_icon_click('${gfx}')" class="focus-gfx-icon center" src="assets/${focusesgfx[gfx]}"></img>
             <p style="
             word-break: break-all">${gfx}</p>
             </div>
         `)
     }
-    focus_edit_new_focus();
 
     /* #region Monaco */
     require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' }});
@@ -697,132 +625,55 @@ $(document).ready(function() {
             ]
         });
 
-        focus_monaco_available = monaco.editor.create(document.getElementById('focus_monaco_available'), {
-            value: "",
-            theme: "hoi4script-theme",
-            language: 'hoi4script',
-            theme: 'vs-dark',
-            automaticLayout: true
-        });
-        focus_monaco_bypass = monaco.editor.create(document.getElementById('focus_monaco_bypass'), {
-            value: "",
-            theme: "hoi4script-theme",
-            language: 'hoi4script',
-            theme: 'vs-dark',
-            automaticLayout: true
-        });
-        focus_monaco_reward = monaco.editor.create(document.getElementById('focus_monaco_reward'), {
-            value: "",
-            theme: "hoi4script-theme",
-            language: 'hoi4script',
-            theme: 'vs-dark',
-            automaticLayout: true
-        });
-        focus_monaco_allow = monaco.editor.create(document.getElementById('focus_monaco_allow'), {
-            value: "",
-            theme: "hoi4script-theme",
-            language: 'hoi4script',
-            theme: 'vs-dark',
-            automaticLayout: true
-        });
-        focus_monaco_cancel = monaco.editor.create(document.getElementById('focus_monaco_cancel'), {
-            value: "",
-            theme: "hoi4script-theme",
-            language: 'hoi4script',
-            theme: 'vs-dark',
-            automaticLayout: true
-        });
-        focus_monaco_historical = monaco.editor.create(document.getElementById('focus_monaco_historical'), {
-            value: "",
-            theme: "hoi4script-theme",
-            language: 'hoi4script',
-            theme: 'vs-dark',
-            automaticLayout: true
-        });
-        focus_monaco_tooltip = monaco.editor.create(document.getElementById('focus_monaco_tooltip'), {
-            value: "",
-            theme: "hoi4script-theme",
-            language: 'hoi4script',
-            theme: 'vs-dark',
-            automaticLayout: true
-        });
-        focus_monaco_select = monaco.editor.create(document.getElementById('focus_monaco_select'), {
-            value: "",
-            theme: "hoi4script-theme",
-            language: 'hoi4script',
-            theme: 'vs-dark',
-            automaticLayout: true
-        });
-
-        focus_monaco_available.getModel().onDidChangeContent((event) => {
-            if (editing_focus) {
-                focuses[editing_focus_id].block_available = focus_monaco_available.getValue();
-            }    
-        });
-        focus_monaco_bypass.getModel().onDidChangeContent((event) => {
-            if (editing_focus) {
-                focuses[editing_focus_id].block_bypass = focus_monaco_bypass.getValue();
-            }    
-        });
-        focus_monaco_reward.getModel().onDidChangeContent((event) => {
-            if (editing_focus) {
-                focuses[editing_focus_id].block_reward = focus_monaco_reward.getValue();
-            }    
-        });
-        focus_monaco_allow.getModel().onDidChangeContent((event) => {
-            if (editing_focus) {
-                focuses[editing_focus_id].block_allow = focus_monaco_allow.getValue();
-            }    
-        });
-        focus_monaco_cancel.getModel().onDidChangeContent((event) => {
-            if (editing_focus) {
-                focuses[editing_focus_id].block_cancel = focus_monaco_cancel.getValue();
-            }    
-        });
-        focus_monaco_historical.getModel().onDidChangeContent((event) => {
-            if (editing_focus) {
-                focuses[editing_focus_id].block_historical = focus_monaco_historical.getValue();
-            }    
-        });
-        focus_monaco_tooltip.getModel().onDidChangeContent((event) => {
-            if (editing_focus) {
-                focuses[editing_focus_id].block_tooltip = focus_monaco_tooltip.getValue();
-            }    
-        });
-        focus_monaco_select.getModel().onDidChangeContent((event) => {
-            if (editing_focus) {
-                focuses[editing_focus_id].block_select = focus_monaco_select.getValue();
-            }    
-        });
+        for (let thing in focus_monaco) {
+            focus_monaco[thing] = monaco.editor.create(document.getElementById('focus_monaco_'+thing), {
+                value: "",
+                theme: "hoi4script-theme",
+                language: 'hoi4script',
+                theme: 'vs-dark',
+                automaticLayout: true
+            });
+        }
+        focus_monaco["reward"].getModel().onDidChangeContent((event) => { focuses[editing_focus_id].blocks["reward"] = focus_monaco["reward"].getValue();    });
+        focus_monaco["available"].getModel().onDidChangeContent((event) => { focuses[editing_focus_id].blocks["available"] = focus_monaco["available"].getValue();    });
+        focus_monaco["bypass"].getModel().onDidChangeContent((event) => { focuses[editing_focus_id].blocks["bypass"] = focus_monaco["bypass"].getValue();    });
+        focus_monaco["allow"].getModel().onDidChangeContent((event) => { focuses[editing_focus_id].blocks["allow"] = focus_monaco["allow"].getValue();    });
+        focus_monaco["cancel"].getModel().onDidChangeContent((event) => { focuses[editing_focus_id].blocks["cancel"] = focus_monaco["cancel"].getValue();    });
+        focus_monaco["historical"].getModel().onDidChangeContent((event) => { focuses[editing_focus_id].blocks["historical"] = focus_monaco["historical"].getValue();    });
+        focus_monaco["select"].getModel().onDidChangeContent((event) => { focuses[editing_focus_id].blocks["select"] = focus_monaco["select"].getValue();    });
+        focus_monaco["tooltip"].getModel().onDidChangeContent((event) => { focuses[editing_focus_id].blocks["tooltip"] = focus_monaco["tooltip"].getValue();    });
         monaco_init = true;
+
+        $("#loading").remove();
+    
+        focus_editor_create_new_tree();
     });
     /* #endregion */
 });
 document.onkeydown = function(e) {
-    if (editing_focus) {
         switch(e.which) {
             case 37: // left
-            if (parseInt($("#focus_x").val()) > 0) {
+            if (focuses[editing_focus_id].visible_x > 0) {
                 $("#focus_x").val( parseInt($("#focus_x").val()) -1 );
-            focus_edit_change_x();
+            focus_editor_change_pos();
             }
             break;
 
             case 38: // up
-            if (parseInt($("#focus_y").val()) > 0) {
+            if (focuses[editing_focus_id].visible_y > 0) {
                 $("#focus_y").val( parseInt($("#focus_y").val()) -1 );
-            focus_edit_change_y();
+            focus_editor_change_pos();
             }
             break;
 
             case 39: // right
             $("#focus_x").val( parseInt($("#focus_x").val()) +1 );
-            focus_edit_change_x();
+            focus_editor_change_pos();
             break;
 
             case 40: // down
             $("#focus_y").val( parseInt($("#focus_y").val()) +1 );
-            focus_edit_change_y();
+            focus_editor_change_pos();
             break;
 
             case 13: //enter
@@ -832,5 +683,4 @@ document.onkeydown = function(e) {
             default: return; // exit this handler for other keys
         }
         e.preventDefault(); // prevent the default action (scroll / move caret)
-    }
 };

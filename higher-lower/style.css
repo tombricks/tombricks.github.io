@@ -1,0 +1,37 @@
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    top: 0;
+    overflow-x: hidden;
+}
+.left {
+    left: 0;
+    background-color: red;
+}
+.right {
+    right: 0;
+    background-color: aqua;
+}
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.mod-thumb {
+    width: 20vw;
+    height: 20vw;
+}
+#loss-screen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #00000088;
+}
+.hidden {
+    visibility: hidden;
+}

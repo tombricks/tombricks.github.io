@@ -1,73 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>HOI4 National Focus Creator</title>
-        <link rel="stylesheet" href="styles.css">
-        <link href='https://fonts.googleapis.com/css?family=Roboto Slab' rel='stylesheet'>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
         <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
         <script src="../jquery-3.6.1.js"></script>
+        <link rel="stylesheet" href="styles.css">
         <script src="scripts/focus-gfx.json.js"></script>
         <script src="scripts/focus.js"></script>
     </head>
     <body>
         <div style="width: 100%; overflow: hidden;"></div>
-            <div id="left-panel">
-                <h1>HOI4 National Focus Creator</h1>
-                <button onclick="export_focuses()">Export Focuses</button>
-                <button onclick="load_focuses()">Load Focuses</button>
+            <div id="topbar">
+                <h2>HOI4 National Focus Creator</h2>
+                <button onclick="focus_editor_save_focuses()">Save Focuses</button>
+                <button onclick="focus_editor_load_focuses()">Load Focuses</button>
+                <button onclick="focus_editor_new_focus_button()">Create Focus</button>
+                <button onclick="focus_editor_create_new_tree()">Create Tree</button>
                 <hr>
-                <div id="edit-focus">
-                    <button id="submit_focus" onclick="submit_focus()">Create Focus</button><br>
-                    <b>Focus ID</b>: <input onchange="focus_edit_change_id()" type="text" id="focus_id" name="focus_id"><button onclick="focus_edit_generate_id()">Generate</button><br>
-                    <b>Focus Name</b>: <input oninput="focus_edit_change_name()" type="text" id="focus_name" name="focus_name"><br>
-                    <b>Focus Description</b>:<br><textarea onchange="focus_edit_change_desc()"  id="focus_desc" name="focus_desc"></textarea><br>
-                    <b>Focus Icon</b>: <input onchange="focus_edit_change_icon()" type="text" id="focus_icon" name="focus_icon"> <button class="focus-gfx-button" onclick="focus_gfx_button()">View Focus GFX</button><br>
-                    <b>Length in weeks</b>: <input oninput="focus_edit_change_cost()" type="number" id="focus_cost" name="focus_cost"><br>
-                    <b>Position</b>: X: <input onchange="focus_edit_change_x()" min=0 step=1 value=0 type="number" id="focus_x" name="focus_x">Y: <input onchange="focus_edit_change_y()" min=0 step=1 value=0 type="number" id="focus_y" name="focus_y"><br>
-                    <b>Mutually Exclusive</b>:<br>
-                    <div id="focus_mutual_box">
-                        <div id="focus_mutuals"></div>
-                        <button onclick="focus_edit_add_mutual()" id="add_mutual">+</button>
-                    </div>
-                    <div id="focus_prereq_all">
-                        <b>Prerequisites</b>:<br>
-                        <div id="focus_prereq_box">
-                            <div id="prereq-container">
-                            </div>
-                            <button onclick="focus_edit_add_prereq()" id="add_prereq">+</button>
-                        </div>
-                    </div>
-                    <br>
-                    <b>Available (Trigger Block)</b>:
-                    <div id="focus_monaco_available" class="monaco-container"></div><br>
-                    <b>Bypass (Trigger Block)</b>:
-                    <div id="focus_monaco_bypass" class="monaco-container"></div><br>
-                    <b>Completion Reward (Effect Block)</b>:
-                    <div id="focus_monaco_reward" class="monaco-container"></div><br>
-                    <button onclick="$('#focus_edit_collapse_container').toggle()" type="button" id="focus_edit_collapse_btn">Toggle Advanced</button>
-                    <div style="display:none" id="focus_edit_collapse_container">
-                        <h2>Advanced</h2>
-                        <b>Allow Branch (Trigger Block)</b>:
-                        <div id="focus_monaco_allow" class="monaco-container"></div><br>
-                        <b>Cancel (Trigger Block)</b>:
-                        <div id="focus_monaco_cancel" class="monaco-container"></div><br>
-                        <b>Historical AI (Trigger Block)</b>:
-                        <div id="focus_monaco_historical" class="monaco-container"></div><br>
-                        <b>Complete Tooltip (Effect Block)</b>:
-                        <div id="focus_monaco_tooltip" class="monaco-container"></div><br>
-                        <b>Select Effect (Effect Block)</b>:
-                        <div id="focus_monaco_select" class="monaco-container"></div><br>
-                    </div>
+            </div>
+            <div id="edit-focus" style="position:absolute; background-color: whitesmoke; width: 485px; overflow-y: scroll; overflow-x: hidden; top: 108px; bottom: 0px;">
+                <div class="focus-editor-basics" style="width: 64px; height: 24px; left: 8px; top: 10px;">Name</div>
+                <input id="focus_name" class="focus-editor-basics focus-editor-option" style="left: 88px; top: 8px; height: 24px; width: 192px;" oninput="focus_editor_change_name()" type="text" >
+                <div class="focus-editor-basics" style="width: 64px; height: 24px; left: 8px; top: 50px;">ID</div>
+                <input id="focus_id" class="focus-editor-basics focus-editor-option" oninput="focus_editor_change_id()" type="text" style="left: 88px; top: 48px; height: 24px; width: 192px;">
+                <button class="focus-editor-basics focus-editor-option" onclick="focus_editor_generate_id()" style="left: 8px; top: 88px; height: 24px; width: 280px;">Generate ID from Name</button>
+                <div class="focus-editor-basics focus-editor-option focus-gfx-icon" style="width: 156px; height: 88px; left: 296px; top: 0px;"><img onclick="focus_editor_open_gallery()" id="focus_icon" src="assets/goal_unknown.png"></img></div>
+                <button class="focus-editor-basics focus-editor-option" onclick="focus_editor_open_gallery()" style="width: 164px; height: 24px; left: 296px; top: 88px;">Open Icon Gallery</button>
+                <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 120px;">Description</div>
+                <textarea id="focus_desc" class="focus-editor-basics focus-editor-option" onchange="focus_editor_change_desc()" style="left: 8px; top: 144px; height: 128px; width: 452px; resize: none"></textarea>
+                <div class="focus-editor-basics" style="width: 24px; height: 24px; left: 8px; top: 291px;">X</div>
+                <input id="focus_x" class="focus-editor-basics focus-editor-option" onchange="focus_editor_change_pos()" step=1 value=0 type="number" style="width: 48px; height: 24px; left: 30px; top: 288px;">
+                <div class="focus-editor-basics" style="width: 24px; height: 24px; left: 88px; top: 291px;">Y</div>
+                <input id="focus_y" class="focus-editor-basics focus-editor-option" onchange="focus_editor_change_pos()" step=1 value=0 type="number" style="width: 48px; height: 24px; left: 110px; top: 288px;">
+                <div class="focus-editor-basics" style="width: 64px; height: 24px; left: 200px; top: 291px;">Relative Position</div>
+                <div class="focus-editor-basics" style="width: 200px; height: 24px; left: 268px; top: 291px;">
+                    <select id="focus_relative_position" style="width: 100%; height: 36px;" onchange="focus_editor_change_relative_button()">
+                        <option style="font-style: italic;">None</option>
+                    </select>
+                </div>
+                <div class="focus-editor-basics" style="width: 222px; height: 24px; left: 8px; top: 328px;">Prerequisites</div>
+                <div class="focus-editor-basics focus-editor-prereq" style="width: 222px; height: 192px; left: 8px; top: 352px; position: absolute;" id="focus_prerequisites">
+                </div>
+
+                <div class="focus-editor-basics" style="width: 222px; height: 24px; left: 238px; top: 328px;">Mutually Exclusives</div>
+                <div class="focus-editor-basics focus-editor-prereq" style="width: 222px; height: 192px; left: 238px; top: 352px; position: absolute;" id="focus_mutually_exclusives">
+                </div>
+
+                <table class="focus-editor-basics" style="left: 8px; top: 560px; height: 48px; width: 452px; display: table;">
+                    <tr style="font-size: 13px; height: 24px;">
+                        <td>Weeks</td>
+                        <td>Available if Capitulated</td>
+                        <td>Cancel if Invalid</td>
+                        <td>Continue if Invalid</td>
+                        <td>Cancelable</td>
+                        <td>Bypass if Unavailable</td>
+                    </tr>
+                    <tr style="height: 24px;">
+                        <td><input id="focus_cost" min=0 step=1 value=0 type="number" style="width: 62px; height: 24px; text-align: 16px;" onchange="focus_editor_change_cost()"></td>
+                        <td><input id="focus_available_if_capitulated" type="checkbox" style="height: 24px;" onchange="focus_editor_change_available_if_capitulated()"></td>
+                        <td><input id="focus_cancel_if_invalid" type="checkbox" style="height: 24px;" onchange="focus_editor_change_cancel_if_invalid()"></td>
+                        <td><input id="focus_continue_if_invalid" type="checkbox" style="height: 24px;" onchange="focus_editor_change_continue_if_invalid()"></td>
+                        <td><input id="focus_cancelable" type="checkbox" style="height: 24px;" onchange="focus_editor_change_cancelable()"></td>
+                        <td><input id="focus_bypass_if_unavailable" type="checkbox" style="height: 24px;" onchange="focus_editor_change_bypass_if_unavailable()"></td>
+                    </tr>
+                </table>
+
+                <div class="focus-editor-basics" style="width: 222px; height: 24px; left: 8px; top: 640px;">Focus Filters</div>
+                <button class="focus-editor-basics focus-editor-option" style="width: 222px; height: 36px; left: 238px; top: 634px;" onclick="focus_editor_open_filters()">Select Filters</button>
+                
+                <div class="focus-editor-basics" style="top: 682px">
+                    <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 0px;">Completion Reward (Effect Block)</div>
+                    <div id="focus_monaco_reward" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="top: 850px">
+                    <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 0px;">Available (Trigger Block)</div>
+                    <div id="focus_monaco_available" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="top: 1018px">
+                    <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 0px;">Bypass (Trigger Block)</div>
+                    <div id="focus_monaco_bypass" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 1194px; font-size: 24px;">Advanced</div>
+                
+                <div class="focus-editor-basics" style="top: 1226px">
+                    <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 0px;">Allow Branch (Trigger Block)</div>
+                    <div id="focus_monaco_allow" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="top: 1394px">
+                    <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 0px;">Cancel (Trigger Block)</div>
+                    <div id="focus_monaco_cancel" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="top: 1562px">
+                    <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 0px;">Historical AI (Trigger Block)</div>
+                    <div id="focus_monaco_historical" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="top: 1730px">
+                    <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 0px;">Select Effect (Effect Block)</div>
+                    <div id="focus_monaco_select" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="top: 1898px">
+                    <div class="focus-editor-basics" style="width: 452px; height: 24px; left: 8px; top: 0px;">Complete Tooltip (Effect Block)</div>
+                    <div id="focus_monaco_tooltip" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
                 </div>
             </div>
             <div id="focus-panel">
                 <div id="focus-panel-focuses">
                     <div id="line-container"></div>
                 </div>
+            </div>
+            <div id="modal">
                 <div id="focus-gfx-panel">
-                    <button class="focus-gfx-button" onclick="focus_gfx_button()">View Focus GFX</button>
+                    <input type="text" id="focus-gfx-search" oninput="focus_editor_search_gallery()" style="width: 100%;" autocomplete="off"></input>
                     <div id="focus-gfx-panel-gfx"></div>
                 </div>
+            </div>
+            <div id="loading">
+                Loading...
             </div>
         </div>
     </body>

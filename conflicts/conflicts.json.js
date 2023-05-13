@@ -156,6 +156,7 @@ var conflictdata = {
                 "name": "South-Eastern Ukraine",
                 "sides": [
                     "UKR",
+                    [ "DNR", "LNR", "ZNR", "KNR" ],
                     "RUS"
                 ],
                 "id": "South-Eastern_Ukraine"
