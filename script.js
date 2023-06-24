@@ -49,7 +49,7 @@ function random_government() {
         extra1 = weighted_random(["Marxist-Leninist ", ""], [1, 2]);
     }
     var total = capitalizeFirstLetter(constitutional + extra1 + party + power + ideology + stype);
-    el.innerText = total + " ";
+    el.innerText = total;
     return total;
 }
 

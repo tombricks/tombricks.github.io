@@ -2,7 +2,7 @@ let editing_focus_id = "-1"
 let tree_data = {}
 monaco_init = false;
 var focus_monaco = {
-    "available": null, "bypass": null, "reward": null, "allow": null, "cancel": null, "historical": null, "tooltip": null, "select": null
+    "available": null, "bypass": null, "completion_reward": null, "allow_branch": null, "cancel": null, "historical_ai": null, "complete_tooltip": null, "select_effect": null, "ai_will_do": null
 };
 
 function focus_editor_generate_filters() {
@@ -106,12 +106,13 @@ function focus_editor_select_focus(id) {
     $("#focus_bypass_if_unavailable").prop('checked', sFocus.bypass_if_unavailable);
     focus_monaco["available"].setValue(sFocus.blocks["available"]);
     focus_monaco["bypass"].setValue(sFocus.blocks["bypass"]);
-    focus_monaco["reward"].setValue(sFocus.blocks["reward"]);
-    focus_monaco["allow"].setValue(sFocus.blocks["allow"]);
+    focus_monaco["completion_reward"].setValue(sFocus.blocks["completion_reward"]);
+    focus_monaco["allow_branch"].setValue(sFocus.blocks["allow_branch"]);
     focus_monaco["cancel"].setValue(sFocus.blocks["cancel"]);
-    focus_monaco["historical"].setValue(sFocus.blocks["historical"]);
-    focus_monaco["tooltip"].setValue(sFocus.blocks["tooltip"]);
-    focus_monaco["select"].setValue(sFocus.blocks["select"]);
+    focus_monaco["historical_ai"].setValue(sFocus.blocks["historical_ai"]);
+    focus_monaco["ai_will_do"].setValue(sFocus.blocks["ai_will_do"]);
+    focus_monaco["complete_tooltip"].setValue(sFocus.blocks["complete_tooltip"]);
+    focus_monaco["select_effect"].setValue(sFocus.blocks["select_effect"]);
 
     for(let filter in tree_data["filters"]) {
         $(`#focus_filters-${filter}`).prop('checked', sFocus.search_filters.includes(filter));
@@ -336,7 +337,8 @@ function focus_editor_change_prereq(id, prereqId, subId, val) {
 }
 
 function focus_editor_create_prereq(id) {
-    tree_data["focus_data"][id].prerequisites.push([$("#focus_prereq-new").val()])
+    tree_data["focus_data"][id].prerequisites.push([$("#focus_prereq-new").val()]);
+    tree_data["focus_data"][$("#focus_prereq-new").val()].reverse_prerequisites.push([id]);
     focus_editor_generate_prereqs(id);
 }
 
@@ -446,7 +448,7 @@ function Focus(internalID) {
         this.blocks[thing] = "";
     }
     this.desc = "";
-    this.cost = 1;
+    this.cost = 5;
     // need to add
     this.relative_position_id = -1;
     this.relative_position_successors = [];
@@ -459,7 +461,6 @@ function Focus(internalID) {
     this.bypass_if_unavailable = false;
     this.will_lead_to_war_with = [];
     this.offset = "";
-    this.ai_will_do = "";
     this.search_filters = [];
 }
 function create_horizontal_line(divname, classes, originx, originy, length) {
@@ -655,20 +656,67 @@ function focus_editor_generate_tree() {
     continuous_focus_position = { x = 55 y = 1500 }`;
     for(let focus in tree_data["focus_data"]) {
         let sFocus = tree_data["focus_data"][focus];
+
+        let _rel = ``;
+        if (sFocus.relative_position_id != -1)
+            _rel = `\n        relative_position_id = ${tree_data.focus_data[sFocus.relative_position_id].id}`;
+
+        let _muts = ``;
+        if (sFocus.mutually_exclusives.length > 0) {
+            _muts = `mutually_exclusive = { `;
+            for (let focus2 of tree_data.focus_data[focus].mutually_exclusives) {
+                _muts += `focus = ${tree_data.focus_data[focus2].id} `;
+            }
+            _muts += `}`;
+        }
+
+        let _preqs = ``;
+        for(let prereq of tree_data.focus_data[focus].prerequisites) {
+            _preqs += `        prerequisite = { `;
+            for (let prereq2 of prereq) {
+                _preqs += `focus = ${tree_data.focus_data[prereq2].id} `;
+            }
+            _preqs += `}\n`
+        }
+
+        let _blocks = ``;
+        for (let block in focus_monaco) {
+            if (sFocus.blocks[block] != "")
+                _blocks += `
+        
+        ${block} = {
+            ${sFocus.blocks[block].replaceAll("\n", "\n            ")}
+        }`
+        }
+
         out += `
 
     focus = {
         id = ${sFocus.id}
+        icon = ${sFocus.icon}
+        x = ${sFocus.relative_x}
+        y = ${sFocus.relative_y}${_rel}
+        cost = ${sFocus.cost}
+        available_if_capitulated = ${yes_no(sFocus.available_if_capitulated)}
+        cancel_if_invalid = ${yes_no(sFocus.cancel_if_invalid)}
+        continue_if_invalid = ${yes_no(sFocus.continue_if_invalid)}
+        cancelable = ${yes_no(sFocus.cancelable)}
+        bypass_if_unavailable = ${yes_no(sFocus.bypass_if_unavailable)}
+        ${_muts}
+${_preqs}${_blocks}
     }`;
     }
     out += `\n}`;
     return out;
 }
-function focus_editor_download_zip() {
-    let zip = new JSZip();
-    zip.file(`common/national_focus/${tree_data.tag}_focus_tree.txt`, focus_editor_generate_tree());
-    let content = zip.generate();
-    location.href = "data:application/zip;base64," + content;
+function focus_editor_download_files() {
+    let link = document.createElement("a");
+    let content = focus_editor_generate_tree();
+    const file = new Blob([content], {type: 'text/plain'});
+    link.href = URL.createObjectURL(file);
+    link.download = `${tree_data.tag}_focus_tree.txt`;
+    link.click();
+    URL.revokeObjectURL(link.href);
 }
 
 function focus_editor_search_gallery() {
@@ -777,14 +825,15 @@ $(document).ready(function() {
                 automaticLayout: true
             });
         }
-        focus_monaco["reward"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["reward"] = focus_monaco["reward"].getValue();    });
+        focus_monaco["completion_reward"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["completion_reward"] = focus_monaco["completion_reward"].getValue();    });
         focus_monaco["available"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["available"] = focus_monaco["available"].getValue();    });
         focus_monaco["bypass"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["bypass"] = focus_monaco["bypass"].getValue();    });
-        focus_monaco["allow"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["allow"] = focus_monaco["allow"].getValue();    });
+        focus_monaco["allow_branch"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["allow_branch"] = focus_monaco["allow_branch"].getValue();    });
         focus_monaco["cancel"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["cancel"] = focus_monaco["cancel"].getValue();    });
-        focus_monaco["historical"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["historical"] = focus_monaco["historical"].getValue();    });
-        focus_monaco["select"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["select"] = focus_monaco["select"].getValue();    });
-        focus_monaco["tooltip"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["tooltip"] = focus_monaco["tooltip"].getValue();    });
+        focus_monaco["historical_ai"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["historical_ai"] = focus_monaco["historical_ai"].getValue();    });
+        focus_monaco["ai_will_do"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["ai_will_do"] = focus_monaco["ai_will_do"].getValue();    });
+        focus_monaco["select_effect"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["select_effect"] = focus_monaco["select_effect"].getValue();    });
+        focus_monaco["complete_tooltip"].getModel().onDidChangeContent((event) => { tree_data["focus_data"][editing_focus_id].blocks["complete_tooltip"] = focus_monaco["complete_tooltip"].getValue();    });
         monaco_init = true;
 
         $("#loading").remove();

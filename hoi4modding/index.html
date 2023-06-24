@@ -18,6 +18,7 @@
                 <h2 style="margin-bottom: 0.4em">HOI4 National Focus Creator</h2>
                 <button onclick="focus_editor_save_focuses()">Save Tree to Browser</button>
                 <button onclick="focus_editor_load_focuses()">Load Tree from Browser</button>
+                <button onclick="focus_editor_download_files()">Download Tree</button>
                 <button onclick="focus_editor_create_new_tree()">Create New Tree</button>
                 <button onclick="focus_editor_new_focus_button()">Create Focus</button>
             </div>
@@ -75,7 +76,7 @@
                 
                 <div class="focus-editor-basics" style="top: 682px">
                     <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Completion Reward (Effect Block)</div>
-                    <div id="focus_monaco_reward" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                    <div id="focus_monaco_completion_reward" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
                 </div>
                 
                 <div class="focus-editor-basics" style="top: 850px">
@@ -88,31 +89,36 @@
                     <div id="focus_monaco_bypass" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
                 </div>
                 
-                <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 1194px; font-size: 24px;">Advanced</div>
-                
-                <div class="focus-editor-basics" style="top: 1226px">
-                    <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Allow Branch (Trigger Block)</div>
-                    <div id="focus_monaco_allow" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                <div class="focus-editor-basics" style="top: 1186px">
+                    <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">AI Will Do (MTTH Block)</div>
+                    <div id="focus_monaco_ai_will_do" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
                 </div>
                 
+                <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 1362px; font-size: 24px;">Advanced</div>
+                
                 <div class="focus-editor-basics" style="top: 1394px">
+                    <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Allow Branch (Trigger Block)</div>
+                    <div id="focus_monaco_allow_branch" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="top: 1562px">
                     <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Cancel (Trigger Block)</div>
                     <div id="focus_monaco_cancel" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
                 </div>
                 
-                <div class="focus-editor-basics" style="top: 1562px">
-                    <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Historical AI (Trigger Block)</div>
-                    <div id="focus_monaco_historical" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
-                </div>
-                
                 <div class="focus-editor-basics" style="top: 1730px">
-                    <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Select Effect (Effect Block)</div>
-                    <div id="focus_monaco_select" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                    <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Historical AI (Trigger Block)</div>
+                    <div id="focus_monaco_historical_ai" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
                 </div>
                 
                 <div class="focus-editor-basics" style="top: 1898px">
+                    <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Select Effect (Effect Block)</div>
+                    <div id="focus_monaco_select_effect" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                </div>
+                
+                <div class="focus-editor-basics" style="top: 2066px">
                     <div class="focus-editor-basics" style="width: 444px; height: 24px; left: 8px; top: 0px;">Complete Tooltip (Effect Block)</div>
-                    <div id="focus_monaco_tooltip" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
+                    <div id="focus_monaco_complete_tooltip" class="focus-editor-basics monaco-container" style="width: 452px; height: 24px; left: 8px; top: 32px;"></div><br>
                 </div>
                 <div id="focus_filters" style="width: 220px;
                 height: 36px;
