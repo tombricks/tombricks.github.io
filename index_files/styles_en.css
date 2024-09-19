@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+#symbols_box {
+    width: 154px;
+    height: 70px;
+    background-image: url(main/img/symbols_box.png);
+}
+
+#awards_box {
+    width: 154px;
+    height: 70px;
+    background-image: url(main/img/awards_box.png);
+}
+
+#acts_box {
+    width: 154px;
+    height: 70px;
+    background-image: url(main/img/acts_box.png);
+}
+
+#objects_box {
+    width: 154px;
+    height: 70px;
+    background-image: url(main/img/objects_box.png);
+}
+
+#rsnet_box {
+    width: 154px;
+    height: 70px;
+    background-image: url(main/img/rsnet_box.png);
+}
+
+#links_box {
+    width: 154px;
+    height: 70px;
+    background-image: url(main/img/links_box.png);
+}
+
+.ItemNameText {
+    position: relative;
+    display: block;
+    padding: 43px 0px 0px 3px;
+    font-family: "Times New Roman", serif;
+    font-size: 10px;
+    color: #0b2862;
+}
+
+.ItemNameText.Objects {
+    padding: 33px 0px 0px 3px;
+}
+
+td.NewLink a {
+    text-decoration: none;
+}
+
+span.setDate {
+    color: #6796C8;
+    font-family: Courier New, monospace;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+}
+
+.hv-font {
+    font-family: "Source Sans 3";
+    font-weight: bold;
+    color: #0156ad;
+    padding: 0;
+    line-height: 0px;
+}
+
+.hv-box {
+    background-color: #0156ad2b;
+    box-shadow: 0 0 4px 3px white inset;
+    text-decoration: none;
+    bottom: 12px;
+    position: relative;
+}
+
+.hv-box-a {
+    text-decoration: none;
+}
+
+.hv-box-a:link {
+    text-decoration: none;
+}
+
+.hv-box-a:visited {
+    text-decoration: none;
+}
+
+.hv-box-a:hover {
+    text-decoration: none;
+}
+
+.hv-box-a:active {
+    text-decoration: none;
+}
+
+.no-padding {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+body {
+    background-image: url('hv/tiledbg.png');
+    background-repeat: repeat;
+}
